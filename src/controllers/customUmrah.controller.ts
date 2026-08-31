@@ -327,28 +327,37 @@ export const calculatePrice = async (
           if (isFullRoom) {
             // Full room: charge full price once, regardless of occupants
             roomPricingType = "full-room";
-            pricePerNightPerPerson = roomType.pricePerNight;
-            totalPriceForStay = roomType.pricePerNight * stay.nights;
+            pricePerNightPerPerson =
+              Math.round(roomType.pricePerNight * 100) / 100; // Round to 2 decimals
+            totalPriceForStay =
+              Math.round(pricePerNightPerPerson * stay.nights * 100) / 100;
           } else if (isBedSharing) {
             // Bed sharing: charge per bed × number of people
             roomPricingType = "bed-sharing";
             const payingPassengers = adultCount + childCount; // infants stay free
-            pricePerNightPerPerson = roomType.pricePerPerson;
+            pricePerNightPerPerson =
+              Math.round(roomType.pricePerPerson * 100) / 100; // Round to 2 decimals
             totalPriceForStay =
-              roomType.pricePerPerson * payingPassengers * stay.nights;
+              Math.round(
+                pricePerNightPerPerson * payingPassengers * stay.nights * 100,
+              ) / 100;
           } else if (roomType.pricePerNight && roomType.occupancy) {
             // Only room price exists: calculate bed price
             roomPricingType = "bed-sharing";
-            const bedPrice = roomType.pricePerNight / roomType.occupancy;
+            const bedPrice =
+              Math.round((roomType.pricePerNight / roomType.occupancy) * 100) /
+              100;
             const payingPassengers = adultCount + childCount;
             pricePerNightPerPerson = bedPrice;
-            totalPriceForStay = bedPrice * payingPassengers * stay.nights;
+            totalPriceForStay =
+              Math.round(bedPrice * payingPassengers * stay.nights * 100) / 100;
           }
         } else {
           // Fallback to hotel default price (treat as full room)
           roomPricingType = "full-room";
-          pricePerNightPerPerson = hotel.pricePerNight;
-          totalPriceForStay = hotel.pricePerNight * stay.nights;
+          pricePerNightPerPerson = Math.round(hotel.pricePerNight * 100) / 100;
+          totalPriceForStay =
+            Math.round(pricePerNightPerPerson * stay.nights * 100) / 100;
         }
 
         const payingPassengers = adultCount + childCount; // infants stay free
@@ -417,28 +426,37 @@ export const calculatePrice = async (
         if (isFullRoom) {
           // Full room: charge full price once
           makkahRoomPricingType = "full-room";
-          pricePerPersonPerNight = roomType.pricePerNight;
-          hotelPrice = roomType.pricePerNight * makkahNights;
+          pricePerPersonPerNight =
+            Math.round(roomType.pricePerNight * 100) / 100;
+          hotelPrice =
+            Math.round(pricePerPersonPerNight * makkahNights * 100) / 100;
         } else if (isBedSharing) {
           // Bed sharing: charge per bed × number of people
           makkahRoomPricingType = "bed-sharing";
           const payingPassengers = adultCount + childCount;
-          pricePerPersonPerNight = roomType.pricePerPerson;
+          pricePerPersonPerNight =
+            Math.round(roomType.pricePerPerson * 100) / 100;
           hotelPrice =
-            roomType.pricePerPerson * payingPassengers * makkahNights;
+            Math.round(
+              pricePerPersonPerNight * payingPassengers * makkahNights * 100,
+            ) / 100;
         } else if (roomType.pricePerNight && roomType.occupancy) {
           // Only room price exists: calculate bed price
           makkahRoomPricingType = "bed-sharing";
-          const bedPrice = roomType.pricePerNight / roomType.occupancy;
+          const bedPrice =
+            Math.round((roomType.pricePerNight / roomType.occupancy) * 100) /
+            100;
           const payingPassengers = adultCount + childCount;
           pricePerPersonPerNight = bedPrice;
-          hotelPrice = bedPrice * payingPassengers * makkahNights;
+          hotelPrice =
+            Math.round(bedPrice * payingPassengers * makkahNights * 100) / 100;
         }
       } else {
         // Fallback to hotel default
         makkahRoomPricingType = "full-room";
-        pricePerPersonPerNight = hotel.pricePerNight;
-        hotelPrice = hotel.pricePerNight * makkahNights;
+        pricePerPersonPerNight = Math.round(hotel.pricePerNight * 100) / 100;
+        hotelPrice =
+          Math.round(pricePerPersonPerNight * makkahNights * 100) / 100;
       }
 
       const payingPassengers = adultCount + childCount;
@@ -497,28 +515,37 @@ export const calculatePrice = async (
         if (isFullRoom) {
           // Full room: charge full price once
           madinahRoomPricingType = "full-room";
-          pricePerPersonPerNight = roomType.pricePerNight;
-          hotelPrice = roomType.pricePerNight * madinahNights;
+          pricePerPersonPerNight =
+            Math.round(roomType.pricePerNight * 100) / 100;
+          hotelPrice =
+            Math.round(pricePerPersonPerNight * madinahNights * 100) / 100;
         } else if (isBedSharing) {
           // Bed sharing: charge per bed × number of people
           madinahRoomPricingType = "bed-sharing";
           const payingPassengers = adultCount + childCount;
-          pricePerPersonPerNight = roomType.pricePerPerson;
+          pricePerPersonPerNight =
+            Math.round(roomType.pricePerPerson * 100) / 100;
           hotelPrice =
-            roomType.pricePerPerson * payingPassengers * madinahNights;
+            Math.round(
+              pricePerPersonPerNight * payingPassengers * madinahNights * 100,
+            ) / 100;
         } else if (roomType.pricePerNight && roomType.occupancy) {
           // Only room price exists: calculate bed price
           madinahRoomPricingType = "bed-sharing";
-          const bedPrice = roomType.pricePerNight / roomType.occupancy;
+          const bedPrice =
+            Math.round((roomType.pricePerNight / roomType.occupancy) * 100) /
+            100;
           const payingPassengers = adultCount + childCount;
           pricePerPersonPerNight = bedPrice;
-          hotelPrice = bedPrice * payingPassengers * madinahNights;
+          hotelPrice =
+            Math.round(bedPrice * payingPassengers * madinahNights * 100) / 100;
         }
       } else {
         // Fallback to hotel default
         madinahRoomPricingType = "full-room";
-        pricePerPersonPerNight = hotel.pricePerNight;
-        hotelPrice = hotel.pricePerNight * madinahNights;
+        pricePerPersonPerNight = Math.round(hotel.pricePerNight * 100) / 100;
+        hotelPrice =
+          Math.round(pricePerPersonPerNight * madinahNights * 100) / 100;
       }
 
       const payingPassengers = adultCount + childCount;
