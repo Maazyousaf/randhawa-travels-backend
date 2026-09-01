@@ -14,6 +14,7 @@ import hotelRoutes from "./routes/hotel.routes.js";
 import hotelBookingRoutes from "./routes/hotelBooking.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import customUmrahRoutes from "./routes/customUmrah.routes.js";
+import bookingSearchRoutes from "./routes/bookingSearch.routes.js";
 
 import { seedFlights } from "./utils/seedFlights.js";
 import { seedGroups } from "./utils/seedGroups.js";
@@ -86,6 +87,9 @@ app.use("/api/hotel-bookings", hotelBookingRoutes);
 
 // Custom Umrah
 app.use("/api/custom-umrah", customUmrahRoutes);
+
+// Booking Search (Guest accessible)
+app.use("/api/bookings", bookingSearchRoutes);
 
 // Admin Panel
 app.use("/api/admin", adminRoutes);

@@ -82,6 +82,9 @@ export interface IFlightBooking extends Document {
   // Request
   requestId: string;
 
+  // Booking Reference (for guest search)
+  bookingReference: string;
+
   // Booking status
   status: "pending" | "confirmed" | "cancelled" | "rejected";
 
@@ -130,6 +133,11 @@ export interface IFlightBooking extends Document {
 
   // Contact details
   contact: IBookingContact;
+
+  // Customer info (for search and notifications)
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
 
   // Optional extras
   extras: IFlightExtras;
@@ -418,6 +426,18 @@ const FlightBookingSchema = new Schema<IFlightBooking>(
     },
 
     // -----------------------------------------------
+    // Booking Reference (for guest search)
+    // -----------------------------------------------
+
+    bookingReference: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      trim: true,
+    },
+
+    // -----------------------------------------------
     // Booking Status
     // -----------------------------------------------
 
@@ -582,6 +602,32 @@ const FlightBookingSchema = new Schema<IFlightBooking>(
     contact: {
       type: BookingContactSchema,
       required: true,
+    },
+
+    // -----------------------------------------------
+    // Customer Info (for search and notifications)
+    // -----------------------------------------------
+
+    customerName: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    customerEmail: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      index: true,
+    },
+
+    customerPhone: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
     },
 
     // -----------------------------------------------

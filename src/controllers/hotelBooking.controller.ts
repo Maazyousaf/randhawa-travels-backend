@@ -4,6 +4,14 @@ import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
 import { sendEmail } from "../utils/email.js";
 import { buildHotelBookingEmail } from "../utils/buildHotelBookingEmail.js";
+import crypto from "crypto";
+
+// =====================================================
+// GENERATE BOOKING REFERENCE
+// =====================================================
+
+const generateHotelBookingReference = () =>
+  `WH-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
 
 // =====================================================
 // CREATE HOTEL BOOKING
@@ -381,6 +389,12 @@ export const createHotelBooking = async (req: Request, res: Response) => {
     const finalPaymentStatus = finalReceiptUrl ? "submitted" : "pending";
 
     // =================================================
+    // GENERATE BOOKING REFERENCE (for guest search)
+    // =================================================
+
+    const bookingReference = generateHotelBookingReference();
+
+    // =================================================
     // CREATE HOTEL BOOKING
     // =================================================
 
@@ -396,6 +410,12 @@ export const createHotelBooking = async (req: Request, res: Response) => {
       // ---------------------------------------------
 
       requestId,
+
+      // ---------------------------------------------
+      // Booking Reference (for guest search)
+      // ---------------------------------------------
+
+      bookingReference,
 
       // ---------------------------------------------
       // Booking Status
@@ -457,9 +477,21 @@ export const createHotelBooking = async (req: Request, res: Response) => {
 
       contact: bookingContact,
 
-      // ---------------------------------------------
+      // -----------------------------------------------
+      // Customer Info (for search and notifications)
+      // -----------------------------------------------
+
+      customerName: bookingGuests[0]
+        ? `${bookingGuests[0].firstName} ${bookingGuests[0].lastName}`
+        : "Guest",
+
+      customerEmail: contactEmail,
+
+      customerPhone: contactPhone,
+
+      // -----------------------------------------------
       // Pricing
-      // ---------------------------------------------
+      // -----------------------------------------------
 
       pricePerNight: pricePerNight || hotel.pricePerNight,
 
@@ -512,6 +544,8 @@ export const createHotelBooking = async (req: Request, res: Response) => {
         id: booking._id,
 
         requestId: booking.requestId,
+
+        bookingReference: booking.bookingReference,
 
         status: booking.status,
 

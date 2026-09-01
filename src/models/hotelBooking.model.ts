@@ -65,6 +65,9 @@ export interface IHotelBooking extends Document {
   // Request
   requestId: string;
 
+  // Booking Reference (for guest search)
+  bookingReference: string;
+
   // Booking status
   status: "pending" | "confirmed" | "cancelled" | "rejected";
 
@@ -98,6 +101,11 @@ export interface IHotelBooking extends Document {
 
   // Contact details
   contact: IHotelBookingContact;
+
+  // Customer info (for search and notifications)
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
 
   // Pricing
   pricePerNight: number;
@@ -317,6 +325,18 @@ const HotelBookingSchema = new Schema<IHotelBooking>(
     },
 
     // -----------------------------------------------
+    // Booking Reference (for guest search)
+    // -----------------------------------------------
+
+    bookingReference: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      trim: true,
+    },
+
+    // -----------------------------------------------
     // Booking Status
     // -----------------------------------------------
 
@@ -444,6 +464,32 @@ const HotelBookingSchema = new Schema<IHotelBooking>(
     contact: {
       type: HotelBookingContactSchema,
       required: true,
+    },
+
+    // -----------------------------------------------
+    // Customer Info (for search and notifications)
+    // -----------------------------------------------
+
+    customerName: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    customerEmail: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      index: true,
+    },
+
+    customerPhone: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
     },
 
     // -----------------------------------------------

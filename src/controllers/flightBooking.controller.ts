@@ -4,6 +4,14 @@ import User from "../models/user.model.js";
 import { sendEmail } from "../utils/email.js";
 import { buildBookingEmail } from "../utils/buildBookingEmail.js";
 import { buildFlightBookingEmail } from "../utils/buildFlightBookingEmail.js";
+import crypto from "crypto";
+
+// =====================================================
+// GENERATE BOOKING REFERENCE
+// =====================================================
+
+const generateFlightBookingReference = () =>
+  `WF-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
 
 // =====================================================
 // CREATE FLIGHT BOOKING
@@ -407,6 +415,12 @@ export const createFlightBooking = async (req: Request, res: Response) => {
     const finalPaymentStatus = finalReceiptUrl ? "submitted" : "pending";
 
     // =================================================
+    // GENERATE BOOKING REFERENCE (for guest search)
+    // =================================================
+
+    const bookingReference = generateFlightBookingReference();
+
+    // =================================================
     // CREATE FLIGHT BOOKING
     // =================================================
 
@@ -422,6 +436,12 @@ export const createFlightBooking = async (req: Request, res: Response) => {
       // ---------------------------------------------
 
       requestId,
+
+      // ---------------------------------------------
+      // Booking Reference (for guest search)
+      // ---------------------------------------------
+
+      bookingReference,
 
       // ---------------------------------------------
       // Booking Status
@@ -501,9 +521,21 @@ export const createFlightBooking = async (req: Request, res: Response) => {
 
       contact: bookingContact,
 
-      // ---------------------------------------------
+      // -----------------------------------------------
+      // Customer Info (for search and notifications)
+      // -----------------------------------------------
+
+      customerName: bookingPassengers[0]
+        ? `${bookingPassengers[0].firstName} ${bookingPassengers[0].lastName}`
+        : "Guest",
+
+      customerEmail: contactEmail,
+
+      customerPhone: contactPhone,
+
+      // -----------------------------------------------
       // Extras
-      // ---------------------------------------------
+      // -----------------------------------------------
 
       extras: extras ?? {
         extraBaggage: false,
@@ -514,9 +546,9 @@ export const createFlightBooking = async (req: Request, res: Response) => {
         refundProtection: false,
       },
 
-      // ---------------------------------------------
+      // -----------------------------------------------
       // Pricing
-      // ---------------------------------------------
+      // -----------------------------------------------
 
       adultPrice: adultPrice ?? 0,
 
@@ -579,6 +611,8 @@ export const createFlightBooking = async (req: Request, res: Response) => {
         id: booking._id,
 
         requestId: booking.requestId,
+
+        bookingReference: booking.bookingReference,
 
         status: booking.status,
 
