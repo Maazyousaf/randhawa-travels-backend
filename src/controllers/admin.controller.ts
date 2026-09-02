@@ -237,6 +237,9 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
       });
     }
 
+    // Get the current booking before update to check what changed
+    const oldBooking = await FlightBooking.findById(id);
+    
     const booking = await FlightBooking.findByIdAndUpdate(
       id,
       { ...updates },
@@ -248,6 +251,48 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
         success: false,
         message: "Flight booking not found",
       });
+    }
+
+    // Send email & SMS if status or payment status changed
+    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+      const customerEmail = booking.customerEmail;
+      const customerName = booking.customerName || booking.passengers?.[0]?.firstName || "Valued Customer";
+      const bookingRef = booking.bookingReference || booking.requestId;
+      
+      // Generate email from template
+      const { generateFlightBookingEmail } = await import("../utils/emailTemplates.js");
+      const emailTemplate = generateFlightBookingEmail(
+        customerName,
+        bookingRef,
+        booking.status,
+        booking.paymentStatus,
+        booking.airline,
+        booking.flightNumber,
+        booking.from,
+        booking.fromCode,
+        booking.to,
+        booking.toCode,
+        booking.departureDate,
+        booking.departureTime,
+        (booking.totalAmount as any) || 0,
+        oldBooking.status !== booking.status,
+        oldBooking.paymentStatus !== booking.paymentStatus
+      );
+
+      // Send email notification
+      if (customerEmail) {
+        try {
+          const { sendEmail } = await import("../utils/email.js");
+          await sendEmail(
+            customerEmail,
+            emailTemplate.subject,
+            emailTemplate.body
+          );
+          console.log(`✅ Flight booking email sent to ${customerEmail}`);
+        } catch (emailError) {
+          console.error("❌ Failed to send booking email:", emailError);
+        }
+      }
     }
 
     return res.status(200).json({
@@ -361,6 +406,7 @@ export const getGroupBooking = async (req: Request, res: Response) => {
 // ==============================
 // Update Group Booking
 // ==============================
+// ==============================
 export const updateGroupBooking = async (req: Request, res: Response) => {
   try {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -373,6 +419,9 @@ export const updateGroupBooking = async (req: Request, res: Response) => {
       });
     }
 
+    // Get the current booking before update to check what changed
+    const oldBooking = await GroupBooking.findById(id);
+
     const booking = await GroupBooking.findByIdAndUpdate(
       id,
       { ...updates },
@@ -384,6 +433,43 @@ export const updateGroupBooking = async (req: Request, res: Response) => {
         success: false,
         message: "Group booking not found",
       });
+    }
+
+    // Send email & SMS if status or payment status changed
+    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+      const customerEmail = booking.customerEmail;
+      const customerName = booking.customerName || booking.groupName || "Valued Customer";
+      const bookingRef = booking.bookingReference;
+      const passengerCount = (booking.passengers as any)?.length || 0;
+      
+      // Generate email from template
+      const { generateGroupBookingEmail } = await import("../utils/emailTemplates.js");
+      const emailTemplate = generateGroupBookingEmail(
+        customerName,
+        bookingRef,
+        booking.status,
+        booking.paymentStatus,
+        booking.groupName,
+        passengerCount,
+        (booking.totalAmount as any) || 0,
+        oldBooking.status !== booking.status,
+        oldBooking.paymentStatus !== booking.paymentStatus
+      );
+
+      // Send email notification
+      if (customerEmail) {
+        try {
+          const { sendEmail } = await import("../utils/email.js");
+          await sendEmail(
+            customerEmail,
+            emailTemplate.subject,
+            emailTemplate.body
+          );
+          console.log(`✅ Group booking email sent to ${customerEmail}`);
+        } catch (emailError) {
+          console.error("❌ Failed to send booking email:", emailError);
+        }
+      }
     }
 
     return res.status(200).json({
@@ -497,6 +583,7 @@ export const getHotelBooking = async (req: Request, res: Response) => {
 // ==============================
 // Update Hotel Booking
 // ==============================
+// ==============================
 export const updateHotelBooking = async (req: Request, res: Response) => {
   try {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -509,6 +596,9 @@ export const updateHotelBooking = async (req: Request, res: Response) => {
       });
     }
 
+    // Get the current booking before update to check what changed
+    const oldBooking = await HotelBooking.findById(id);
+
     const booking = await HotelBooking.findByIdAndUpdate(
       id,
       { ...updates },
@@ -520,6 +610,45 @@ export const updateHotelBooking = async (req: Request, res: Response) => {
         success: false,
         message: "Hotel booking not found",
       });
+    }
+
+    // Send email & SMS if status or payment status changed
+    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+      const customerEmail = booking.customerEmail;
+      const customerName = booking.customerName || booking.hotelName || "Valued Customer";
+      const bookingRef = booking.bookingReference;
+      
+      // Generate email from template
+      const { generateHotelBookingEmail } = await import("../utils/emailTemplates.js");
+      const emailTemplate = generateHotelBookingEmail(
+        customerName,
+        bookingRef,
+        booking.status,
+        booking.paymentStatus,
+        booking.hotelName,
+        booking.checkIn,
+        booking.checkOut,
+        booking.rooms || 0,
+        booking.nights || 0,
+        (booking.totalAmount as any) || 0,
+        oldBooking.status !== booking.status,
+        oldBooking.paymentStatus !== booking.paymentStatus
+      );
+
+      // Send email notification
+      if (customerEmail) {
+        try {
+          const { sendEmail } = await import("../utils/email.js");
+          await sendEmail(
+            customerEmail,
+            emailTemplate.subject,
+            emailTemplate.body
+          );
+          console.log(`✅ Hotel booking email sent to ${customerEmail}`);
+        } catch (emailError) {
+          console.error("❌ Failed to send booking email:", emailError);
+        }
+      }
     }
 
     return res.status(200).json({
