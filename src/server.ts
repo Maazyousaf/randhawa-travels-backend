@@ -26,9 +26,19 @@ const app = express();
 // CORS
 // ======================================
 
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:8080")
+  .split(",")
+  .map((url) => url.trim());
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:8080",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
