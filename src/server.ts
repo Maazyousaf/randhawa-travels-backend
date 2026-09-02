@@ -28,18 +28,24 @@ const app = express();
 
 const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:8080")
   .split(",")
-  .map((url) => url.trim());
+  .map((url) => url.trim().replace(/\/$/, ""))
+  .filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+      const normalizedOrigin = origin?.replace(/\/$/, "");
+
+      if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
+        callback(null, normalizedOrigin || true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204,
   }),
 );
 
