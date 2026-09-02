@@ -63,7 +63,7 @@ app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json({
     success: true,
     message: "🚀 Randhawa Air Travels Int'l Backend Running...",
-    version: "1.0.0",
+    version: "1.0.1",
   });
 });
 
