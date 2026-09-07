@@ -27,10 +27,32 @@ const app = express();
 // CORS
 // ======================================
 
-const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:8080")
-  .split(",")
-  .map((url) => url.trim().replace(/\/$/, ""))
-  .filter(Boolean);
+const defaultAllowedOrigins = [
+  "http://localhost:8080",
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:4173",
+  "https://randhawa-air-travel.vercel.app",
+  "https://randhawa-admin.vercel.app",
+  "https://wander-luxe-scape.vercel.app",
+  "https://www.randhawa-air-travel.vercel.app",
+  "https://www.randhawa-admin.vercel.app",
+  "https://www.wander-luxe-scape.vercel.app",
+];
+
+const allowedOrigins = [
+  ...new Set([
+    ...defaultAllowedOrigins,
+    ...(process.env.CLIENT_URL || "")
+      .split(",")
+      .map((url) => url.trim().replace(/\/$/, ""))
+      .filter(Boolean),
+    ...(process.env.FRONTEND_URL || "")
+      .split(",")
+      .map((url) => url.trim().replace(/\/$/, ""))
+      .filter(Boolean),
+  ]),
+];
 
 app.use(
   cors({
@@ -47,6 +69,14 @@ app.use(
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     optionsSuccessStatus: 204,
+  }),
+);
+
+app.options(
+  "*",
+  cors({
+    origin: true,
+    credentials: true,
   }),
 );
 
@@ -95,6 +125,8 @@ app.use("/api/groups", groupRoutes);
 
 // Group ticket listings and bookings
 app.use("/api/group-tickets", groupTicketRoutes);
+// Vercel can remove the /api function prefix before forwarding to Express.
+app.use("/group-tickets", groupTicketRoutes);
 
 // Group Bookings
 app.use("/api/group-bookings", groupBookingRoutes);
