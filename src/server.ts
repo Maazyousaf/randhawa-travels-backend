@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
+import mongoose from "mongoose";
 
 import { connectDB } from "./config/database.js";
 
@@ -22,6 +23,8 @@ import { seedGroups } from "./utils/seedGroups.js";
 import { seedHotels } from "./utils/seedHotels.js";
 
 const app = express();
+const isServerless = !!process.env.VERCEL;
+const apiPrefix = isServerless ? "" : "/api";
 
 // ======================================
 // CORS
@@ -73,12 +76,24 @@ app.use(
 );
 
 app.options(
-  "*",
+  /.*?/,
   cors({
     origin: true,
     credentials: true,
   }),
 );
+
+app.use(async (req, res, next) => {
+  if (process.env.VERCEL && mongoose.connection.readyState === 0) {
+    try {
+      await connectDB();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  next();
+});
 
 // ======================================
 // BODY PARSERS
@@ -109,42 +124,44 @@ app.get("/", (_req: Request, res: Response) => {
 // ======================================
 
 // Authentication
-app.use("/api/auth", authRoutes);
+app.use(`${apiPrefix}/auth`, authRoutes);
 
 // Flight Search
-app.use("/api/flights", flightRoutes);
+app.use(`${apiPrefix}/flights`, flightRoutes);
 
 // Flight Booking
-app.use("/api/flight-bookings", flightBookingRoutes);
+app.use(`${apiPrefix}/flight-bookings`, flightBookingRoutes);
 
 // Image Upload
-app.use("/api/uploads", uploadRoutes);
+app.use(`${apiPrefix}/uploads`, uploadRoutes);
 
 // Groups
-app.use("/api/groups", groupRoutes);
+app.use(`${apiPrefix}/groups`, groupRoutes);
 
 // Group ticket listings and bookings
-app.use("/api/group-tickets", groupTicketRoutes);
-// Vercel can remove the /api function prefix before forwarding to Express.
-app.use("/group-tickets", groupTicketRoutes);
+app.use(`${apiPrefix}/group-tickets`, groupTicketRoutes);
+// Serverless compatibility for Vercel-proxied route patterns
+if (isServerless) {
+  app.use("/group-tickets", groupTicketRoutes);
+}
 
 // Group Bookings
-app.use("/api/group-bookings", groupBookingRoutes);
+app.use(`${apiPrefix}/group-bookings`, groupBookingRoutes);
 
 // Hotels
-app.use("/api/hotels", hotelRoutes);
+app.use(`${apiPrefix}/hotels`, hotelRoutes);
 
 // Hotel Bookings
-app.use("/api/hotel-bookings", hotelBookingRoutes);
+app.use(`${apiPrefix}/hotel-bookings`, hotelBookingRoutes);
 
 // Custom Umrah
-app.use("/api/custom-umrah", customUmrahRoutes);
+app.use(`${apiPrefix}/custom-umrah`, customUmrahRoutes);
 
 // Booking Search (Guest accessible)
-app.use("/api/bookings", bookingSearchRoutes);
+app.use(`${apiPrefix}/bookings`, bookingSearchRoutes);
 
 // Admin Panel
-app.use("/api/admin", adminRoutes);
+app.use(`${apiPrefix}/admin`, adminRoutes);
 
 // ======================================
 // 404 ROUTE
