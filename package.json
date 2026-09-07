@@ -10,7 +10,8 @@
     "start": "node dist/server.js",
     "vercel-build": "npm run build",
     "create-admin": "tsx src/utils/createAdmin.ts",
-    "seed-admins": "tsx scripts/seedAdminUsers.ts"
+    "seed-admins": "tsx scripts/seedAdminUsers.ts",
+    "seed-group-tickets": "tsx scripts/seedGroupTickets.ts"
   },
   "keywords": [],
   "author": "",

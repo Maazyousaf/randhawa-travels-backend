@@ -15,6 +15,7 @@ import hotelBookingRoutes from "./routes/hotelBooking.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import customUmrahRoutes from "./routes/customUmrah.routes.js";
 import bookingSearchRoutes from "./routes/bookingSearch.routes.js";
+import groupTicketRoutes from "./routes/groupTicket.routes.js";
 
 import { seedFlights } from "./utils/seedFlights.js";
 import { seedGroups } from "./utils/seedGroups.js";
@@ -91,6 +92,9 @@ app.use("/api/uploads", uploadRoutes);
 
 // Groups
 app.use("/api/groups", groupRoutes);
+
+// Group ticket listings and bookings
+app.use("/api/group-tickets", groupTicketRoutes);
 
 // Group Bookings
 app.use("/api/group-bookings", groupBookingRoutes);
