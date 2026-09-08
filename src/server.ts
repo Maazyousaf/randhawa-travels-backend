@@ -24,7 +24,15 @@ import { seedHotels } from "./utils/seedHotels.js";
 
 const app = express();
 const isServerless = !!process.env.VERCEL;
-const apiPrefix = isServerless ? "" : "/api";
+const apiPrefix = "/api";
+
+const mountRoute = (path: string, router: any) => {
+  app.use(path, router);
+
+  if (isServerless) {
+    app.use(path.replace(/^\/api/, "") || "/", router);
+  }
+};
 
 // ======================================
 // CORS
@@ -124,44 +132,40 @@ app.get("/", (_req: Request, res: Response) => {
 // ======================================
 
 // Authentication
-app.use(`${apiPrefix}/auth`, authRoutes);
+mountRoute(`${apiPrefix}/auth`, authRoutes);
 
 // Flight Search
-app.use(`${apiPrefix}/flights`, flightRoutes);
+mountRoute(`${apiPrefix}/flights`, flightRoutes);
 
 // Flight Booking
-app.use(`${apiPrefix}/flight-bookings`, flightBookingRoutes);
+mountRoute(`${apiPrefix}/flight-bookings`, flightBookingRoutes);
 
 // Image Upload
-app.use(`${apiPrefix}/uploads`, uploadRoutes);
+mountRoute(`${apiPrefix}/uploads`, uploadRoutes);
 
 // Groups
-app.use(`${apiPrefix}/groups`, groupRoutes);
+mountRoute(`${apiPrefix}/groups`, groupRoutes);
 
 // Group ticket listings and bookings
-app.use(`${apiPrefix}/group-tickets`, groupTicketRoutes);
-// Serverless compatibility for Vercel-proxied route patterns
-if (isServerless) {
-  app.use("/group-tickets", groupTicketRoutes);
-}
+mountRoute(`${apiPrefix}/group-tickets`, groupTicketRoutes);
 
 // Group Bookings
-app.use(`${apiPrefix}/group-bookings`, groupBookingRoutes);
+mountRoute(`${apiPrefix}/group-bookings`, groupBookingRoutes);
 
 // Hotels
-app.use(`${apiPrefix}/hotels`, hotelRoutes);
+mountRoute(`${apiPrefix}/hotels`, hotelRoutes);
 
 // Hotel Bookings
-app.use(`${apiPrefix}/hotel-bookings`, hotelBookingRoutes);
+mountRoute(`${apiPrefix}/hotel-bookings`, hotelBookingRoutes);
 
 // Custom Umrah
-app.use(`${apiPrefix}/custom-umrah`, customUmrahRoutes);
+mountRoute(`${apiPrefix}/custom-umrah`, customUmrahRoutes);
 
 // Booking Search (Guest accessible)
-app.use(`${apiPrefix}/bookings`, bookingSearchRoutes);
+mountRoute(`${apiPrefix}/bookings`, bookingSearchRoutes);
 
 // Admin Panel
-app.use(`${apiPrefix}/admin`, adminRoutes);
+mountRoute(`${apiPrefix}/admin`, adminRoutes);
 
 // ======================================
 // 404 ROUTE
