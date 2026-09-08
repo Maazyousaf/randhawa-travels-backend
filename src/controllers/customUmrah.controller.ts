@@ -51,6 +51,7 @@ export const getMakkahHotels = async (
     });
 
     // Filter by maxPrice if provided (check roomTypes pricePerPerson)
+
     let filteredHotels = hotels;
     if (maxPrice) {
       const max = Number(maxPrice);
