@@ -11,6 +11,7 @@ import {
 import FlightBooking from "../models/flightBooking.model.js";
 import GroupBooking from "../models/groupBooking.model.js";
 import HotelBooking from "../models/hotelBooking.model.js";
+import GroupTicketBooking from "../models/groupTicketBooking.model.js";
 import User from "../models/user.model.js";
 
 // ==============================
@@ -239,7 +240,7 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
 
     // Get the current booking before update to check what changed
     const oldBooking = await FlightBooking.findById(id);
-    
+
     const booking = await FlightBooking.findByIdAndUpdate(
       id,
       { ...updates },
@@ -254,13 +255,21 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
     }
 
     // Send email & SMS if status or payment status changed
-    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+    if (
+      oldBooking &&
+      (oldBooking.status !== booking.status ||
+        oldBooking.paymentStatus !== booking.paymentStatus)
+    ) {
       const customerEmail = booking.customerEmail;
-      const customerName = booking.customerName || booking.passengers?.[0]?.firstName || "Valued Customer";
+      const customerName =
+        booking.customerName ||
+        booking.passengers?.[0]?.firstName ||
+        "Valued Customer";
       const bookingRef = booking.bookingReference || booking.requestId;
-      
+
       // Generate email from template
-      const { generateFlightBookingEmail } = await import("../utils/emailTemplates.js");
+      const { generateFlightBookingEmail } =
+        await import("../utils/emailTemplates.js");
       const emailTemplate = generateFlightBookingEmail(
         customerName,
         bookingRef,
@@ -276,7 +285,7 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
         booking.departureTime,
         (booking.totalAmount as any) || 0,
         oldBooking.status !== booking.status,
-        oldBooking.paymentStatus !== booking.paymentStatus
+        oldBooking.paymentStatus !== booking.paymentStatus,
       );
 
       // Send email notification
@@ -286,7 +295,7 @@ export const updateFlightBooking = async (req: Request, res: Response) => {
           await sendEmail(
             customerEmail,
             emailTemplate.subject,
-            emailTemplate.body
+            emailTemplate.body,
           );
           console.log(`✅ Flight booking email sent to ${customerEmail}`);
         } catch (emailError) {
@@ -436,14 +445,20 @@ export const updateGroupBooking = async (req: Request, res: Response) => {
     }
 
     // Send email & SMS if status or payment status changed
-    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+    if (
+      oldBooking &&
+      (oldBooking.status !== booking.status ||
+        oldBooking.paymentStatus !== booking.paymentStatus)
+    ) {
       const customerEmail = booking.customerEmail;
-      const customerName = booking.customerName || booking.groupName || "Valued Customer";
+      const customerName =
+        booking.customerName || booking.groupName || "Valued Customer";
       const bookingRef = booking.bookingReference;
       const passengerCount = (booking.passengers as any)?.length || 0;
-      
+
       // Generate email from template
-      const { generateGroupBookingEmail } = await import("../utils/emailTemplates.js");
+      const { generateGroupBookingEmail } =
+        await import("../utils/emailTemplates.js");
       const emailTemplate = generateGroupBookingEmail(
         customerName,
         bookingRef,
@@ -453,7 +468,7 @@ export const updateGroupBooking = async (req: Request, res: Response) => {
         passengerCount,
         (booking.totalAmount as any) || 0,
         oldBooking.status !== booking.status,
-        oldBooking.paymentStatus !== booking.paymentStatus
+        oldBooking.paymentStatus !== booking.paymentStatus,
       );
 
       // Send email notification
@@ -463,7 +478,7 @@ export const updateGroupBooking = async (req: Request, res: Response) => {
           await sendEmail(
             customerEmail,
             emailTemplate.subject,
-            emailTemplate.body
+            emailTemplate.body,
           );
           console.log(`✅ Group booking email sent to ${customerEmail}`);
         } catch (emailError) {
@@ -517,6 +532,139 @@ export const deleteGroupBooking = async (req: Request, res: Response) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+// ==============================
+// Group Ticket Bookings Management
+// ==============================
+export const getGroupTicketBookings = async (_req: Request, res: Response) => {
+  try {
+    const bookings = await GroupTicketBooking.find().sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: bookings.length,
+      bookings,
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getGroupTicketBooking = async (req: Request, res: Response) => {
+  try {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const booking = await GroupTicketBooking.findById(id);
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Group ticket booking not found",
+      });
+    }
+
+    return res.status(200).json({ success: true, booking });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const updateGroupTicketBooking = async (req: Request, res: Response) => {
+  try {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const oldBooking = await GroupTicketBooking.findById(id);
+    const booking = await GroupTicketBooking.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          status: req.body.status,
+          paymentStatus: req.body.paymentStatus,
+          agentRemarks: req.body.agentRemarks || "",
+        },
+      },
+      { new: true, runValidators: false },
+    );
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Group ticket booking not found",
+      });
+    }
+
+    const statusChanged = oldBooking?.status !== booking.status;
+    const paymentStatusChanged =
+      oldBooking?.paymentStatus !== booking.paymentStatus;
+
+    if (oldBooking && (statusChanged || paymentStatusChanged)) {
+      const customerEmail = String(booking.customer?.email || "").trim();
+
+      if (customerEmail) {
+        try {
+          const { generateGroupTicketBookingEmail } =
+            await import("../utils/emailTemplates.js");
+          const { sendEmail } = await import("../utils/email.js");
+          const emailTemplate = generateGroupTicketBookingEmail(
+            String(
+              booking.customer?.name ||
+                booking.passengers?.[0]?.firstName ||
+                "Valued Customer",
+            ),
+            booking.bookingReference,
+            booking.status,
+            booking.paymentStatus,
+            booking.ticketSnapshot?.airline || "Group Ticket",
+            booking.ticketSnapshot?.sector || "—",
+            booking.passengers?.length || 0,
+            Number(booking.totalAmount || 0),
+            statusChanged,
+            paymentStatusChanged,
+          );
+
+          await sendEmail(
+            customerEmail,
+            emailTemplate.subject,
+            emailTemplate.body,
+          );
+          console.log(`✅ Group ticket booking email sent to ${customerEmail}`);
+        } catch (emailError) {
+          console.error(
+            "❌ Failed to send group ticket booking email:",
+            emailError,
+          );
+        }
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Group ticket booking updated successfully",
+      booking,
+    });
+  } catch (error: any) {
+    return res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+export const deleteGroupTicketBooking = async (req: Request, res: Response) => {
+  try {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const booking = await GroupTicketBooking.findByIdAndDelete(id);
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Group ticket booking not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Group ticket booking deleted successfully",
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -613,13 +761,19 @@ export const updateHotelBooking = async (req: Request, res: Response) => {
     }
 
     // Send email & SMS if status or payment status changed
-    if (oldBooking && (oldBooking.status !== booking.status || oldBooking.paymentStatus !== booking.paymentStatus)) {
+    if (
+      oldBooking &&
+      (oldBooking.status !== booking.status ||
+        oldBooking.paymentStatus !== booking.paymentStatus)
+    ) {
       const customerEmail = booking.customerEmail;
-      const customerName = booking.customerName || booking.hotelName || "Valued Customer";
+      const customerName =
+        booking.customerName || booking.hotelName || "Valued Customer";
       const bookingRef = booking.bookingReference;
-      
+
       // Generate email from template
-      const { generateHotelBookingEmail } = await import("../utils/emailTemplates.js");
+      const { generateHotelBookingEmail } =
+        await import("../utils/emailTemplates.js");
       const emailTemplate = generateHotelBookingEmail(
         customerName,
         bookingRef,
@@ -632,7 +786,7 @@ export const updateHotelBooking = async (req: Request, res: Response) => {
         booking.nights || 0,
         (booking.totalAmount as any) || 0,
         oldBooking.status !== booking.status,
-        oldBooking.paymentStatus !== booking.paymentStatus
+        oldBooking.paymentStatus !== booking.paymentStatus,
       );
 
       // Send email notification
@@ -642,7 +796,7 @@ export const updateHotelBooking = async (req: Request, res: Response) => {
           await sendEmail(
             customerEmail,
             emailTemplate.subject,
-            emailTemplate.body
+            emailTemplate.body,
           );
           console.log(`✅ Hotel booking email sent to ${customerEmail}`);
         } catch (emailError) {

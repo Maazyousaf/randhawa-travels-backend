@@ -27,21 +27,83 @@ router.delete("/users/:id", adminProtect, adminController.deleteUserById);
 
 // Flight Bookings Management
 router.get("/flight-bookings", adminProtect, adminController.getFlightBookings);
-router.get("/flight-bookings/:id", adminProtect, adminController.getFlightBooking);
-router.put("/flight-bookings/:id", adminProtect, adminController.updateFlightBooking);
-router.delete("/flight-bookings/:id", adminProtect, adminController.deleteFlightBooking);
+router.get(
+  "/flight-bookings/:id",
+  adminProtect,
+  adminController.getFlightBooking,
+);
+router.put(
+  "/flight-bookings/:id",
+  adminProtect,
+  adminController.updateFlightBooking,
+);
+router.delete(
+  "/flight-bookings/:id",
+  adminProtect,
+  adminController.deleteFlightBooking,
+);
 
 // Group Bookings Management
 router.get("/group-bookings", adminProtect, adminController.getGroupBookings);
-router.get("/group-bookings/:id", adminProtect, adminController.getGroupBooking);
-router.put("/group-bookings/:id", adminProtect, adminController.updateGroupBooking);
-router.delete("/group-bookings/:id", adminProtect, adminController.deleteGroupBooking);
-router.post("/group-bookings/:id/admin-reply", adminProtect, adminController.sendAdminReplyToGroupBooking);
+router.get(
+  "/group-bookings/:id",
+  adminProtect,
+  adminController.getGroupBooking,
+);
+router.put(
+  "/group-bookings/:id",
+  adminProtect,
+  adminController.updateGroupBooking,
+);
+router.delete(
+  "/group-bookings/:id",
+  adminProtect,
+  adminController.deleteGroupBooking,
+);
+router.post(
+  "/group-bookings/:id/admin-reply",
+  adminProtect,
+  adminController.sendAdminReplyToGroupBooking,
+);
+
+// Group Ticket Bookings Management
+router.get(
+  "/group-ticket-bookings",
+  adminProtect,
+  adminController.getGroupTicketBookings,
+);
+router.get(
+  "/group-ticket-bookings/:id",
+  adminProtect,
+  adminController.getGroupTicketBooking,
+);
+router.put(
+  "/group-ticket-bookings/:id",
+  adminProtect,
+  adminController.updateGroupTicketBooking,
+);
+router.delete(
+  "/group-ticket-bookings/:id",
+  adminProtect,
+  adminController.deleteGroupTicketBooking,
+);
 
 // Hotel Bookings Management
 router.get("/hotel-bookings", adminProtect, adminController.getHotelBookings);
-router.get("/hotel-bookings/:id", adminProtect, adminController.getHotelBooking);
-router.put("/hotel-bookings/:id", adminProtect, adminController.updateHotelBooking);
-router.delete("/hotel-bookings/:id", adminProtect, adminController.deleteHotelBooking);
+router.get(
+  "/hotel-bookings/:id",
+  adminProtect,
+  adminController.getHotelBooking,
+);
+router.put(
+  "/hotel-bookings/:id",
+  adminProtect,
+  adminController.updateHotelBooking,
+);
+router.delete(
+  "/hotel-bookings/:id",
+  adminProtect,
+  adminController.deleteHotelBooking,
+);
 
 export default router;

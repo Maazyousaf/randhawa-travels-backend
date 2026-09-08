@@ -27,7 +27,7 @@ export const generateFlightBookingEmail = (
   departureTime: string,
   totalAmount: number,
   statusChanged: boolean,
-  paymentStatusChanged: boolean
+  paymentStatusChanged: boolean,
 ): EmailTemplate => {
   let statusMessage = "";
   let subject = "";
@@ -96,7 +96,7 @@ export const generateGroupBookingEmail = (
   passengerCount: number,
   totalAmount: number,
   statusChanged: boolean,
-  paymentStatusChanged: boolean
+  paymentStatusChanged: boolean,
 ): EmailTemplate => {
   let statusMessage = "";
   let subject = "";
@@ -151,6 +151,72 @@ export const generateGroupBookingEmail = (
 };
 
 // =====================================================
+// GROUP TICKET BOOKING EMAIL TEMPLATE
+// =====================================================
+
+export const generateGroupTicketBookingEmail = (
+  customerName: string,
+  bookingReference: string,
+  status: string,
+  paymentStatus: string,
+  airline: string,
+  sector: string,
+  passengerCount: number,
+  totalAmount: number,
+  statusChanged: boolean,
+  paymentStatusChanged: boolean,
+): EmailTemplate => {
+  let statusMessage = "";
+  let subject = `Group Ticket Booking Update - ${bookingReference}`;
+
+  if (statusChanged) {
+    subject = `Your Group Ticket Status Updated - ${bookingReference}`;
+    const statusMap: Record<string, string> = {
+      pending: "is awaiting confirmation",
+      confirmed: "has been CONFIRMED",
+      cancelled: "has been CANCELLED",
+      rejected: "has been REJECTED",
+      completed: "has been COMPLETED",
+    };
+    statusMessage = `Your group ticket booking ${bookingReference} ${statusMap[status] || status}.`;
+  }
+
+  if (paymentStatusChanged) {
+    subject = `Group Ticket Payment Update - ${bookingReference}`;
+    const paymentMap: Record<string, string> = {
+      pending: "is pending",
+      submitted: "has been received and is being verified",
+      verified: "has been VERIFIED",
+      paid: "has been PAID",
+      rejected: "has been REJECTED",
+      failed: "has FAILED",
+      refunded: "has been REFUNDED",
+    };
+    statusMessage = `Your payment for group ticket booking ${bookingReference} ${paymentMap[paymentStatus] || paymentStatus}.`;
+  }
+
+  return {
+    subject,
+    body: `
+      <h2>Hello ${customerName},</h2>
+      <p>${statusMessage}</p>
+      <h3>Booking Details:</h3>
+      <ul>
+        <li><strong>Booking Reference:</strong> ${bookingReference}</li>
+        <li><strong>Status:</strong> ${status}</li>
+        <li><strong>Payment Status:</strong> ${paymentStatus}</li>
+        <li><strong>Airline:</strong> ${airline}</li>
+        <li><strong>Sector:</strong> ${sector}</li>
+        <li><strong>Passengers:</strong> ${passengerCount}</li>
+        <li><strong>Total Amount:</strong> PKR ${totalAmount.toLocaleString()}</li>
+      </ul>
+      <p>If you have any questions, please contact Randhawa Air Travels Int'l.</p>
+      <p>Best regards,<br/>Randhawa Air Travels Int'l</p>
+    `,
+  };
+};
+
+// =====================================================
 // HOTEL BOOKING EMAIL TEMPLATES
 // =====================================================
 
@@ -166,7 +232,7 @@ export const generateHotelBookingEmail = (
   nights: number,
   totalAmount: number,
   statusChanged: boolean,
-  paymentStatusChanged: boolean
+  paymentStatusChanged: boolean,
 ): EmailTemplate => {
   let statusMessage = "";
   let subject = "";
