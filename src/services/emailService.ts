@@ -35,8 +35,10 @@ interface BookingEmailData {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER || "",
-    pass: process.env.EMAIL_PASSWORD || "",
+    user: (process.env.EMAIL_USER || "").replace(/[\r\n]/g, "").trim(),
+    pass: (process.env.EMAIL_PASS || process.env.EMAIL_PASSWORD || "")
+      .replace(/[\r\n]/g, "")
+      .trim(),
   },
 });
 

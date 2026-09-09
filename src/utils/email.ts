@@ -1,12 +1,25 @@
 import nodemailer from "nodemailer";
 
+const cleanEnvValue = (value?: string) =>
+  (value || "")
+    .replace(/^Config\s*/i, "")
+    .replace(/[\r\n]/g, "")
+    .trim();
+
+const emailHost = cleanEnvValue(process.env.EMAIL_HOST);
+const emailPort = Number(cleanEnvValue(process.env.EMAIL_PORT)) || 587;
+const emailUser = cleanEnvValue(process.env.EMAIL_USER);
+const emailPass = cleanEnvValue(
+  process.env.EMAIL_PASS || process.env.EMAIL_PASSWORD,
+);
+
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
+  host: emailHost,
+  port: emailPort,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: emailUser,
+    pass: emailPass,
   },
 });
 
@@ -17,7 +30,7 @@ export const sendEmail = async (
 ) => {
   try {
     await transporter.sendMail({
-      from: `"Randhawa Air Travels Int'l" <${process.env.EMAIL_USER}>`,
+      from: `"Randhawa Air Travels Int'l" <${emailUser}>`,
       to: email,
       subject,
       html: `
