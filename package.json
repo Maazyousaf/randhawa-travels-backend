@@ -11,7 +11,8 @@
     "vercel-build": "npm run build",
     "create-admin": "tsx src/utils/createAdmin.ts",
     "seed-admins": "tsx scripts/seedAdminUsers.ts",
-    "seed-group-tickets": "tsx scripts/seedGroupTickets.ts"
+    "seed-group-tickets": "tsx scripts/seedGroupTickets.ts",
+    "seed-late-flights": "tsx scripts/seedLateSeptemberOctoberFlights.ts"
   },
   "keywords": [],
   "author": "",

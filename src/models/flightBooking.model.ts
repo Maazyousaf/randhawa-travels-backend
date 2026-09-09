@@ -93,6 +93,7 @@ export interface IFlightBooking extends Document {
 
   // Selected static flight
   flightId: string;
+  multiCityLegs?: unknown[];
 
   airline: string;
   airlineCode: string;
@@ -467,6 +468,11 @@ const FlightBookingSchema = new Schema<IFlightBooking>(
       type: String,
       required: true,
       index: true,
+    },
+
+    multiCityLegs: {
+      type: [Schema.Types.Mixed],
+      default: undefined,
     },
 
     airline: {

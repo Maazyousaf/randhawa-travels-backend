@@ -3,8 +3,35 @@ import { searchFlights } from "../services/flight.service.js";
 
 export const searchFlightsController = async (req: Request, res: Response) => {
   try {
-    const { from, to, departDate, cabin, adults, children, infants } =
-      req.query;
+    const {
+      from,
+      to,
+      departDate,
+      cabin,
+      adults,
+      children,
+      infants,
+      tripType,
+      legs,
+    } = req.query;
+
+    let multiCityLegs;
+    if (tripType === "multicity" && legs) {
+      try {
+        multiCityLegs = JSON.parse(String(legs));
+      } catch {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid multi-city legs",
+        });
+      }
+      if (!Array.isArray(multiCityLegs) || multiCityLegs.length < 2) {
+        return res.status(400).json({
+          success: false,
+          message: "At least two multi-city legs are required",
+        });
+      }
+    }
 
     // ----------------------------------
     // Required fields
@@ -34,6 +61,10 @@ export const searchFlightsController = async (req: Request, res: Response) => {
       children: children ? Number(children) : 0,
 
       infants: infants ? Number(infants) : 0,
+      tripType: tripType
+        ? (String(tripType) as "oneway" | "roundtrip" | "multicity")
+        : undefined,
+      multiCityLegs,
     });
 
     // ----------------------------------

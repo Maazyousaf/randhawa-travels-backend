@@ -8,6 +8,8 @@ export interface SearchFlightsParams {
   adults?: number;
   children?: number;
   infants?: number;
+  tripType?: "oneway" | "roundtrip" | "multicity";
+  multiCityLegs?: Array<{ from: string; to: string; departDate: string }>;
 }
 
 export const searchFlights = async ({
@@ -18,34 +20,40 @@ export const searchFlights = async ({
   adults = 1,
   children = 0,
   infants = 0,
+  tripType,
+  multiCityLegs,
 }: SearchFlightsParams) => {
-  const query: any = {
-    from: from.trim().toUpperCase(),
-    to: to.trim().toUpperCase(),
-    status: "active",
+  const baseQuery = { status: "active" };
+
+  const buildQuery = (leg: {
+    from: string;
+    to: string;
+    departDate?: string;
+  }) => {
+    const query: any = {
+      ...baseQuery,
+      from: leg.from.trim().toUpperCase(),
+      to: leg.to.trim().toUpperCase(),
+    };
+    if (leg.departDate) query.departureDate = leg.departDate;
+    if (cabin) query.cabin = cabin.trim().toLowerCase();
+    return query;
   };
+
+  const legs =
+    tripType === "multicity" && multiCityLegs?.length
+      ? multiCityLegs
+      : [{ from, to, departDate }];
 
   // -----------------------------
   // Departure Date
   // -----------------------------
 
-  if (departDate) {
-    query.departureDate = departDate;
-  }
-
-  // -----------------------------
-  // Cabin
-  // -----------------------------
-
-  if (cabin) {
-    query.cabin = cabin.trim().toLowerCase();
-  }
-
-  const flights = await Flight.find(query)
-    .sort({
-      departureTime: 1,
-    })
-    .lean();
+  const flightSets = await Promise.all(
+    legs.map((leg) =>
+      Flight.find(buildQuery(leg)).sort({ departureTime: 1 }).lean(),
+    ),
+  );
 
   // -----------------------------
   // Passenger counts
@@ -57,7 +65,7 @@ export const searchFlights = async ({
   // Format response
   // -----------------------------
 
-  return flights.map((flight) => {
+  const formatFlight = (flight: any) => {
     const adultPrice = Number(flight.price) || 0;
 
     const childPrice = Number(flight.childPrice) || 0;
@@ -125,5 +133,47 @@ export const searchFlights = async ({
 
       currency: flight.currency,
     };
-  });
+  };
+
+  if (tripType !== "multicity" || legs.length <= 1) {
+    return flightSets[0].map(formatFlight);
+  }
+
+  const itineraries: any[] = [];
+  const buildItineraries = (legIndex: number, selected: any[]) => {
+    if (itineraries.length >= 30) return;
+    if (legIndex === flightSets.length) {
+      const formatted = selected.map(formatFlight);
+      const first = formatted[0];
+      itineraries.push({
+        ...first,
+        id: `multi-${selected.map((flight) => flight.id).join("-")}`,
+        flightNumber: formatted
+          .map((flight) => flight.flightNumber)
+          .join(" / "),
+        multiCityLegs: formatted,
+        adultPrice: formatted.reduce(
+          (sum, flight) => sum + flight.adultPrice,
+          0,
+        ),
+        childPrice: formatted.reduce(
+          (sum, flight) => sum + flight.childPrice,
+          0,
+        ),
+        infantPrice: formatted.reduce(
+          (sum, flight) => sum + flight.infantPrice,
+          0,
+        ),
+        price: formatted.reduce((sum, flight) => sum + flight.price, 0),
+        duration: formatted.map((flight) => flight.duration).join(" + "),
+      });
+      return;
+    }
+    for (const flight of flightSets[legIndex]) {
+      buildItineraries(legIndex + 1, [...selected, flight]);
+    }
+  };
+
+  buildItineraries(0, []);
+  return itineraries;
 };

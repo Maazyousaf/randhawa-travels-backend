@@ -40,6 +40,7 @@ export const createFlightBooking = async (req: Request, res: Response) => {
       requestId,
 
       flightId,
+      multiCityLegs,
 
       airline,
       airlineCode,
@@ -460,6 +461,7 @@ export const createFlightBooking = async (req: Request, res: Response) => {
       // ---------------------------------------------
 
       flightId,
+      multiCityLegs,
 
       airline,
 
