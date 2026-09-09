@@ -208,6 +208,35 @@ export const buildFlightBookingEmail = (booking: any): string => {
 
       <!-- ROUTE CARD -->
       <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:18px 20px;margin-bottom:20px;">
+        ${
+          booking.multiCityLegs && booking.multiCityLegs.length > 0
+            ? `
+        <!-- MULTI-CITY ITINERARY -->
+        <div style="margin-bottom:15px;">
+          <div style="font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:12px;">Multi-City Itinerary (${booking.multiCityLegs.length} legs)</div>
+          ${booking.multiCityLegs
+            .map(
+              (leg: any, idx: number) => `
+          <div style="background:#ffffff;border:1px solid #bae6fd;border-radius:6px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="flex:1;">
+              <div style="font-size:12px;color:#64748b;margin-bottom:3px;">Leg ${idx + 1}</div>
+              <div style="font-size:14px;font-weight:700;color:#1e3a5f;">${leg.fromCode || "—"} → ${leg.toCode || "—"}</div>
+              <div style="font-size:12px;color:#64748b;margin-top:4px;">
+                ${leg.departureDate || "—"} · ${leg.departureTime || "—"}
+              </div>
+              ${
+                leg.arrivalTime
+                  ? `<div style="font-size:12px;color:#94a3b8;">Arr: ${leg.arrivalTime}</div>`
+                  : ""
+              }
+            </div>
+          </div>
+          `
+            )
+            .join("")}
+        </div>
+        `
+            : `
         <table style="width:100%;border-collapse:collapse;">
           <tr>
             <td style="text-align:center;width:33%;">
@@ -230,6 +259,8 @@ export const buildFlightBookingEmail = (booking: any): string => {
             </td>
           </tr>
         </table>
+        `
+        }
       </div>
 
       <!-- FLIGHT DETAILS -->
