@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import FlightBooking from "../models/flightBooking.model.js";
 import User from "../models/user.model.js";
 import { sendEmail } from "../utils/email.js";
-import { buildBookingEmail } from "../utils/buildBookingEmail.js";
 import { buildFlightBookingEmail } from "../utils/buildFlightBookingEmail.js";
 import crypto from "crypto";
 
@@ -831,8 +830,8 @@ export const sendBookingEmail = async (req: Request, res: Response) => {
       });
     }
 
-    // Build email body using shared utility
-    const emailBody = buildBookingEmail(booking);
+    // Use the flight-specific template because it includes multi-city legs.
+    const emailBody = buildFlightBookingEmail(booking);
 
     // =================================================
     // SEND — reuse existing sendEmail utility
