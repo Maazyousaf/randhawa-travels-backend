@@ -483,6 +483,11 @@ const GroupPackageSchema = new Schema<IGroupPackage>(
       default: "",
     },
 
+    baggage: {
+      type: String,
+      default: "",
+    },
+
     sharingPrice: {
       type: Number,
       min: 0,

@@ -134,7 +134,7 @@ export const seedGroups = async (): Promise<void> => {
         retDepTime: "14:00",
         retArrTime: "20:30",
 
-        baggage: "20 KG",
+        baggage: "20 KG Checked + 7 KG Carry",
 
         sharingPrice: 95000,
         quadPrice: 105000,
@@ -199,7 +199,7 @@ export const seedGroups = async (): Promise<void> => {
         retDepTime: "16:00",
         retArrTime: "22:00",
 
-        baggage: "20 KG",
+        baggage: "23 KG Checked + 10 KG Carry",
 
         sharingPrice: 88000,
         quadPrice: 98000,
@@ -264,7 +264,7 @@ export const seedGroups = async (): Promise<void> => {
         retDepTime: "21:00",
         retArrTime: "02:00+1",
 
-        baggage: "20 KG",
+        baggage: "30 KG Checked + 12 KG Carry",
 
         sharingPrice: 178000,
         quadPrice: 188000,
