@@ -205,6 +205,7 @@ export const calculatePrice = async (
       flightId,
       visaId,
       transportId,
+      transportJourneys, // NEW ✨
       ziyaratId,
     } = req.body;
 
@@ -609,6 +610,61 @@ export const calculatePrice = async (
         };
 
         totalAmount += transportPrice;
+      }
+    }
+
+    // NEW: Process multiple transport journeys ✨
+    if (transportJourneys && Array.isArray(transportJourneys) && transportJourneys.length > 0) {
+      const processedJourneys = [];
+
+      for (let i = 0; i < transportJourneys.length; i++) {
+        const journey = transportJourneys[i];
+
+        if (!journey.transportId || journey.transportId === "transport-none") {
+          continue; // Skip "No Transport" options
+        }
+
+        const service = getServiceById("transport", journey.transportId);
+
+        if (!service) {
+          continue; // Skip invalid services
+        }
+
+        const journeyPrice =
+          service.pricePerPerson > 0
+            ? service.pricePerPerson * adultCount +
+              service.pricePerPerson * childCount
+            : service.pricePerPackage || 0;
+
+        processedJourneys.push({
+          journeyNumber: i + 1,
+          id: journey.id,
+          fromCity: journey.fromCity,
+          toCity: journey.toCity,
+          journeyDate: journey.journeyDate,
+          journeyTime: journey.journeyTime,
+          serviceName: service.name,
+          serviceId: service.id,
+          pricePerPerson: service.pricePerPerson,
+          pricePerPackage: service.pricePerPackage,
+          totalPrice: journeyPrice,
+        });
+
+        totalAmount += journeyPrice;
+      }
+
+      if (processedJourneys.length > 0) {
+        breakdown.transportJourneys = processedJourneys;
+        // Also update aggregate transport price
+        const totalTransportJourneyPrice = processedJourneys.reduce(
+          (sum, j) => sum + j.totalPrice,
+          0,
+        );
+        breakdown.transport = {
+          id: "transport-journeys",
+          name: `${processedJourneys.length} Transport Journey(s)`,
+          totalPrice: totalTransportJourneyPrice,
+        };
       }
     }
 

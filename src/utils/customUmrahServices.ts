@@ -13,6 +13,10 @@ export interface CustomUmrahService {
   duration?: string;
   inclusions?: string[];
   status: "active" | "inactive";
+  // For transport filtering
+  minPassengers?: number;
+  maxPassengers?: number;
+  applicableCities?: ("jeddah" | "madinah")[];
 }
 
 export interface CustomUmrahServicesConfig {
@@ -37,7 +41,8 @@ export const CUSTOM_UMRAH_SERVICES: CustomUmrahServicesConfig = {
     {
       id: "visa-normal",
       name: "Normal Visa Processing",
-      description: "Standard Umrah visa processing. Processing time: 4-5 working days.",
+      description:
+        "Standard Umrah visa processing. Processing time: 4-5 working days.",
       pricePerPerson: 8500,
       category: "standard",
       duration: "4-5 working days",
@@ -68,37 +73,96 @@ export const CUSTOM_UMRAH_SERVICES: CustomUmrahServicesConfig = {
       status: "active",
     },
     {
-      id: "transport-shared",
-      name: "Shared Transport",
-      description:
-        "Comfortable shared transport for airport transfers and intercity travel between Makkah and Madinah.",
-      pricePerPerson: 6000,
+      id: "transport-car-2pax",
+      name: "Private Car (1-2 persons)",
+      description: "Comfortable private car for one or two passengers",
+      pricePerPerson: 0,
+      pricePerPackage: 15000,
       category: "standard",
-      duration: "Full trip duration",
+      minPassengers: 1,
+      maxPassengers: 2,
+      applicableCities: ["jeddah", "madinah"],
       inclusions: [
-        "Airport pickup & drop-off",
-        "Makkah to Madinah transfer",
-        "Madinah to Makkah transfer",
-        "Air-conditioned coach",
+        "Private car pickup",
+        "Air-conditioned vehicle",
         "Professional driver",
       ],
       status: "active",
     },
     {
-      id: "transport-private-sedan",
-      name: "Private Sedan",
-      description:
-        "Private sedan service for your family with dedicated driver (4-5 persons).",
+      id: "transport-van-2to4pax",
+      name: "Private Van (1-4 persons)",
+      description: "Spacious private van with extra luggage space",
       pricePerPerson: 0,
-      pricePerPackage: 35000,
-      category: "premium",
-      duration: "Full trip duration",
+      pricePerPackage: 30000,
+      category: "standard",
+      minPassengers: 1,
+      maxPassengers: 4,
+      applicableCities: ["jeddah", "madinah"],
       inclusions: [
-        "Private sedan (4-5 persons)",
-        "Airport pickup & drop-off",
-        "All intercity transfers",
-        "Dedicated professional driver",
-        "24/7 availability",
+        "Private van pickup",
+        "Air-conditioned vehicle",
+        "Extra luggage space",
+        "Professional driver",
+      ],
+      status: "active",
+    },
+    {
+      id: "transport-staria-3to5pax",
+      name: "Staria/Starex Taxi (3-5 Person)",
+      description:
+        "Comfortable taxi van for 3-5 passengers - 5,500 SAR per person",
+      pricePerPerson: 5500,
+      category: "standard",
+      minPassengers: 3,
+      maxPassengers: 5,
+      applicableCities: ["jeddah", "madinah"],
+      inclusions: [
+        "Staria/Starex vehicle",
+        "Air-conditioned",
+        "Professional driver",
+      ],
+      status: "active",
+    },
+    {
+      id: "transport-starex-5to10pax",
+      name: "Starex (5-10 Person)",
+      description: "Large minibus for 5-10 passengers - 4,800 SAR per person",
+      pricePerPerson: 4800,
+      category: "standard",
+      minPassengers: 5,
+      maxPassengers: 10,
+      applicableCities: ["jeddah", "madinah"],
+      inclusions: ["Starex minibus", "Air-conditioned", "Professional driver"],
+      status: "active",
+    },
+    {
+      id: "transport-bus-5to10pax",
+      name: "Bus (5-10 Person)",
+      description: "Charter bus for 5-10 passengers - 3,500 SAR per person",
+      pricePerPerson: 3500,
+      category: "standard",
+      minPassengers: 5,
+      maxPassengers: 10,
+      applicableCities: ["jeddah", "madinah"],
+      inclusions: ["Charter bus", "Air-conditioned", "Professional driver"],
+      status: "active",
+    },
+    {
+      id: "transport-large-bus-11to20pax",
+      name: "Large Bus (11-20 Person)",
+      description:
+        "Large charter bus for 11-20 passengers - 3,000 SAR per person",
+      pricePerPerson: 3000,
+      category: "standard",
+      minPassengers: 11,
+      maxPassengers: 20,
+      applicableCities: ["jeddah", "madinah"],
+      inclusions: [
+        "Large charter bus",
+        "Air-conditioned",
+        "Professional driver",
+        "Comfortable seating",
       ],
       status: "active",
     },
