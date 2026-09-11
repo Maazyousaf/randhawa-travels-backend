@@ -102,7 +102,7 @@ export const seedGroups = async (): Promise<void> => {
 
     const umrahPackages = [
       {
-        id: "umrah-sep-7-days",
+        id: "umrah-oct-7-days",
         name: "7 Days Umrah Package",
 
         makkahHotel: "Swiss Makkah",
@@ -121,7 +121,7 @@ export const seedGroups = async (): Promise<void> => {
         depFrom: "LHE",
         depTo: "JED",
 
-        depDate: "2026-09-05",
+        depDate: "2026-10-05",
         depTime: "08:30",
 
         arrTime: "11:45",
@@ -129,10 +129,12 @@ export const seedGroups = async (): Promise<void> => {
         retFrom: "JED",
         retTo: "LHE",
 
-        retDate: "2026-09-11",
+        retDate: "2026-10-11",
 
         retDepTime: "14:00",
         retArrTime: "20:30",
+
+        baggage: "20 KG",
 
         sharingPrice: 95000,
         quadPrice: 105000,
@@ -165,7 +167,7 @@ export const seedGroups = async (): Promise<void> => {
       },
 
       {
-        id: "umrah-sep-10-days",
+        id: "umrah-oct-10-days",
         name: "10 Days Umrah Package",
 
         makkahHotel: "Makkah Hotel",
@@ -184,7 +186,7 @@ export const seedGroups = async (): Promise<void> => {
         depFrom: "LHE",
         depTo: "JED",
 
-        depDate: "2026-09-05",
+        depDate: "2026-10-05",
         depTime: "14:00",
 
         arrTime: "17:30",
@@ -192,10 +194,12 @@ export const seedGroups = async (): Promise<void> => {
         retFrom: "JED",
         retTo: "LHE",
 
-        retDate: "2026-09-14",
+        retDate: "2026-10-14",
 
         retDepTime: "16:00",
         retArrTime: "22:00",
+
+        baggage: "20 KG",
 
         sharingPrice: 88000,
         quadPrice: 98000,
@@ -228,7 +232,7 @@ export const seedGroups = async (): Promise<void> => {
       },
 
       {
-        id: "umrah-sep-14-days",
+        id: "umrah-oct-14-days",
         name: "14 Days Umrah Package",
 
         makkahHotel: "Hilton Makkah Convention Hotel",
@@ -247,7 +251,7 @@ export const seedGroups = async (): Promise<void> => {
         depFrom: "MUX",
         depTo: "JED",
 
-        depDate: "2026-09-03",
+        depDate: "2026-10-03",
         depTime: "16:45",
 
         arrTime: "19:30",
@@ -255,10 +259,12 @@ export const seedGroups = async (): Promise<void> => {
         retFrom: "JED",
         retTo: "MUX",
 
-        retDate: "2026-09-16",
+        retDate: "2026-10-16",
 
         retDepTime: "21:00",
         retArrTime: "02:00+1",
+
+        baggage: "20 KG",
 
         sharingPrice: 178000,
         quadPrice: 188000,
