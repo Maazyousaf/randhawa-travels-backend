@@ -16,7 +16,7 @@ const TICKET_DATA = [
     airline: "Airblue",
     airlineCode: "PA",
     airlineLogo:
-      "https://images.kiwi.com/airlines/64/PA.png",
+      "https://logotyp.us/file/airblue.svg",
     sector: "MUX-JED-MUX",
     outboundDate: "2026-09-18",
     outboundTime: "00:45 - 04:10",
@@ -36,7 +36,7 @@ const TICKET_DATA = [
     airline: "Airblue",
     airlineCode: "PA",
     airlineLogo:
-      "https://images.kiwi.com/airlines/64/PA.png",
+      "https://logotyp.us/file/airblue.svg",
     sector: "MUX-JED-MUX",
     outboundDate: "2026-09-20",
     outboundTime: "00:45 - 04:10",
