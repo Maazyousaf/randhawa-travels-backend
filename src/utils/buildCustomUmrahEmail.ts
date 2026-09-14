@@ -258,7 +258,7 @@ export const buildCustomUmrahEmail = (booking: any): string => {
       <div style="text-align:center;margin-bottom:8px;">
         <div style="display:inline-block;background:#dcfce7;border-radius:50%;width:52px;height:52px;line-height:52px;font-size:26px;margin-bottom:10px;">✔</div>
         <h2 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#15803d;">Custom Umrah Booking Request Submitted Successfully</h2>
-        <p style="margin:0;font-size:14px;color:#6b7280;">Your custom Umrah package booking has been received. Our team will review it and contact you shortly for confirmation.</p>
+        <p style="margin:0;font-size:14px;color:#6b7280;">Your customized Umrah package booking has been received. Our team will review it and contact you shortly for confirmation.</p>
       </div>
 
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;" />
@@ -275,7 +275,7 @@ export const buildCustomUmrahEmail = (booking: any): string => {
         </tr>
         <tr>
           <td style="padding:6px 0;font-size:13px;color:#6b7280;">Booking Type</td>
-          <td style="padding:6px 0;font-size:13px;font-weight:600;">Custom Umrah Package</td>
+          <td style="padding:6px 0;font-size:13px;font-weight:600;">Customized Umrah Package</td>
         </tr>
         <tr>
           <td style="padding:6px 0;font-size:13px;color:#6b7280;">Status</td>
