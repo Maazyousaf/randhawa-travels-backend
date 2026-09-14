@@ -241,6 +241,24 @@ export interface ICustomUmrahServiceSnapshot {
   pricePerPackage?: number;
   totalPrice?: number;
   selected: boolean;
+  // Transport journey routes (for transport snapshot)
+  routes?: Array<{
+    journeyNumber?: number;
+    id?: string;
+    fromCity?: string;
+    toCity?: string;
+    journeyDate?: string;
+    journeyTime?: string;
+    distance?: number;
+    estimatedDuration?: string;
+    notes?: string;
+    serviceId?: string;
+    serviceName?: string;
+    vehicleType?: string;
+    pricePerPerson?: number;
+    pricePerPackage?: number;
+    totalPrice?: number;
+  }>;
 
   [key: string]: unknown;
 }
@@ -954,6 +972,11 @@ const CustomUmrahServiceSnapshotSchema =
       selected: {
         type: Boolean,
         default: false,
+      },
+
+      routes: {
+        type: Schema.Types.Mixed,
+        default: null,
       },
     },
     {

@@ -93,10 +93,13 @@ export const searchBookings = async (
           ...b.toObject(),
           type: "flight",
         })),
-        ...groupBookings.map((b: any) => ({
-          ...b.toObject(),
-          type: "group",
-        })),
+        ...groupBookings.map((b: any) => {
+          const obj = b.toObject();
+          return {
+            ...obj,
+            type: obj.bookingType === "custom-umrah" ? "custom-umrah" : "group",
+          };
+        }),
         ...hotelBookings.map((b: any) => ({
           ...b.toObject(),
           type: "hotel",
@@ -125,10 +128,13 @@ export const searchBookings = async (
           ...b.toObject(),
           type: "flight",
         })),
-        ...groupBookings.map((b: any) => ({
-          ...b.toObject(),
-          type: "group",
-        })),
+        ...groupBookings.map((b: any) => {
+          const obj = b.toObject();
+          return {
+            ...obj,
+            type: obj.bookingType === "custom-umrah" ? "custom-umrah" : "group",
+          };
+        }),
         ...hotelBookings.map((b: any) => ({
           ...b.toObject(),
           type: "hotel",
@@ -143,10 +149,12 @@ export const searchBookings = async (
         _id: booking._id,
         bookingReference: booking.bookingReference,
         type: booking.type,
+        bookingType: booking.bookingType || booking.type,
         customerName: booking.customerName,
         customerEmail: booking.customerEmail,
         customerPhone: booking.customerPhone || booking.contact?.phone,
         totalPrice: booking.totalAmount || booking.totalPrice || 0,
+        transportSnapshot: booking.transportSnapshot,
         status: booking.status || "pending",
         createdAt: booking.createdAt,
         updatedAt: booking.updatedAt,
@@ -275,11 +283,15 @@ export const getBookingById = async (
     }
 
     const bookingData = booking.toObject();
+    // Determine the granular type for custom-umrah bookings
+    const resolvedType =
+      bookingData.bookingType === "custom-umrah" ? "custom-umrah" : type;
     res.status(200).json({
       success: true,
       booking: {
         ...bookingData,
-        type,
+        type: resolvedType,
+        bookingType: bookingData.bookingType || resolvedType,
       },
     });
   } catch (error) {

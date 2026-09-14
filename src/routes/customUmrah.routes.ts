@@ -14,6 +14,8 @@ import {
   addAdminReplyCustomUmrah,
 } from "../controllers/customUmrah.controller.js";
 
+import { getTransportVehicles } from "../controllers/transportVehicle.controller.js";
+
 import { optionalAuth, protect } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -38,6 +40,14 @@ router.get("/hotels/madinah", getMadinahHotels);
 // =====================================================
 
 router.get("/services", getServices);
+
+// =====================================================
+// GET TRANSPORT VEHICLES (from DB — admin-manageable)
+// GET /api/custom-umrah/transport-vehicles
+// GET /api/custom-umrah/transport-vehicles?passengers=4
+// =====================================================
+
+router.get("/transport-vehicles", getTransportVehicles);
 
 // =====================================================
 // CALCULATE PRICE

@@ -16,7 +16,8 @@ export const buildCustomUmrahEmail = (booking: any): string => {
     booking.flightNumber || fs.flightNumber || `${airlineCode} Umrah` || "—";
 
   const fromCode = booking.fromCode || fs.from || "—";
-  const fromCity = booking.fromCity || fs.fromCity || booking.pakistanAirportCity || "—";
+  const fromCity =
+    booking.fromCity || fs.fromCity || booking.pakistanAirportCity || "—";
 
   const toCode = booking.toCode || fs.to || "—";
   const toCity = booking.toCity || fs.toCity || booking.saudiAirportCity || "—";
@@ -73,8 +74,27 @@ export const buildCustomUmrahEmail = (booking: any): string => {
   const visaName = booking.visaName || visaInfo.name || "Not selected";
   const visaPrice = Number(booking.visaPrice || visaInfo.price || 0);
 
-  const transportName = booking.transportName || transportInfo.name || "Not selected";
-  const transportPrice = Number(booking.transportPrice || transportInfo.price || 0);
+  const transportName =
+    booking.transportName || transportInfo.name || "Not selected";
+  const transportPrice = Number(
+    booking.transportPrice || transportInfo.price || 0,
+  );
+
+  // Transport routes/journeys detail
+  const transportRoutes: any[] = transportInfo.routes || [];
+  const transportRoutesRows = transportRoutes
+    .map(
+      (r: any) =>
+        `<tr>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;text-align:center;">${r.journeyNumber || ""}</td>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;">${r.fromCity || "—"} → ${r.toCity || "—"}</td>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;">${r.serviceName || "—"}</td>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;">${r.journeyDate || "—"}${r.journeyTime ? ` · ${r.journeyTime}` : ""}</td>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;">${r.distance ? `${r.distance} km` : "—"}${r.estimatedDuration ? ` · ${r.estimatedDuration}` : ""}${r.notes ? `<br>Note: ${r.notes}` : ""}</td>
+          <td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;font-size:13px;text-align:right;font-weight:600;">${fmt(r.totalPrice || 0)}</td>
+        </tr>`,
+    )
+    .join("");
 
   // =====================================================
   // PRICING — per pax type
@@ -93,7 +113,10 @@ export const buildCustomUmrahEmail = (booking: any): string => {
   const childTotal = children * childPrice;
   const infantTotal = infants * infantPrice;
 
-  const hotelTotal = hotelStays.reduce((sum: number, stay: any) => sum + (stay.totalPrice || 0), 0);
+  const hotelTotal = hotelStays.reduce(
+    (sum: number, stay: any) => sum + (stay.totalPrice || 0),
+    0,
+  );
 
   const pricingRows = [
     adults > 0
@@ -258,10 +281,14 @@ export const buildCustomUmrahEmail = (booking: any): string => {
           <td style="padding:6px 0;font-size:13px;color:#6b7280;">Status</td>
           <td style="padding:6px 0;font-size:13px;font-weight:600;color:#d97706;text-transform:capitalize;">${booking.status || "pending"}</td>
         </tr>
-        ${booking.pnr ? `<tr>
+        ${
+          booking.pnr
+            ? `<tr>
           <td style="padding:6px 0;font-size:13px;color:#6b7280;">PNR</td>
           <td style="padding:6px 0;font-size:13px;font-weight:500;">${booking.pnr}</td>
-        </tr>` : ""}
+        </tr>`
+            : ""
+        }
       </table>
 
 
@@ -326,7 +353,7 @@ export const buildCustomUmrahEmail = (booking: any): string => {
 
       <!-- SERVICES -->
       <h3 style="font-size:14px;font-weight:700;color:#1e3a5f;margin:0 0 10px;">Services</h3>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:${transportRoutes.length > 0 ? "8px" : "20px"};">
         <tr>
           <td style="padding:6px 0;font-size:13px;color:#6b7280;width:180px;">Visa Service</td>
           <td style="padding:6px 0;font-size:13px;font-weight:500;">${visaName}</td>
@@ -336,6 +363,28 @@ export const buildCustomUmrahEmail = (booking: any): string => {
           <td style="padding:6px 0;font-size:13px;font-weight:500;">${transportName}</td>
         </tr>
       </table>
+
+      ${
+        transportRoutes.length > 0
+          ? `<!-- TRANSPORT ROUTES -->
+      <h3 style="font-size:13px;font-weight:700;color:#1e3a5f;margin:0 0 8px;">🚗 Transport Journeys (${transportRoutes.length})</h3>
+      <div style="overflow-x:auto;margin-bottom:20px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #e5e7eb;">
+          <thead>
+            <tr style="background:#1e3a5f;color:#ffffff;">
+              <th style="padding:8px 12px;text-align:center;font-weight:600;white-space:nowrap;">#</th>
+              <th style="padding:8px 12px;text-align:left;font-weight:600;white-space:nowrap;">Route</th>
+              <th style="padding:8px 12px;text-align:left;font-weight:600;white-space:nowrap;">Vehicle</th>
+              <th style="padding:8px 12px;text-align:left;font-weight:600;white-space:nowrap;">Date / Time</th>
+              <th style="padding:8px 12px;text-align:left;font-weight:600;white-space:nowrap;">Distance / Notes</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:600;white-space:nowrap;">Price</th>
+            </tr>
+          </thead>
+          <tbody>${transportRoutesRows}</tbody>
+        </table>
+      </div>`
+          : ""
+      }
 
       <!-- PAYMENT -->
       <h3 style="font-size:14px;font-weight:700;color:#1e3a5f;margin:0 0 10px;">Payment Information</h3>

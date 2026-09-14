@@ -4,6 +4,7 @@ import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
 import GroupBooking from "../models/groupBooking.model.js";
 import Group from "../models/group.model.js";
+import TransportVehicle from "../models/transportVehicle.model.js";
 import {
   CUSTOM_UMRAH_SERVICES,
   getServiceById,
@@ -614,7 +615,12 @@ export const calculatePrice = async (
     }
 
     // NEW: Process multiple transport journeys ✨
-    if (transportJourneys && Array.isArray(transportJourneys) && transportJourneys.length > 0) {
+    // Prices come from DB (TransportVehicle) so admin can update anytime
+    if (
+      transportJourneys &&
+      Array.isArray(transportJourneys) &&
+      transportJourneys.length > 0
+    ) {
       const processedJourneys = [];
 
       for (let i = 0; i < transportJourneys.length; i++) {
@@ -624,17 +630,40 @@ export const calculatePrice = async (
           continue; // Skip "No Transport" options
         }
 
-        const service = getServiceById("transport", journey.transportId);
+        // ── Lookup in DB first (admin-managed prices) ──────────────────
+        const dbVehicle = await TransportVehicle.findOne({
+          id: journey.transportId,
+          status: "active",
+        });
 
-        if (!service) {
-          continue; // Skip invalid services
+        let servicePrice = 0;
+        let serviceName = journey.transportId;
+        let pricePerPerson = 0;
+        let pricePerPackage = 0;
+
+        if (dbVehicle) {
+          pricePerPerson = dbVehicle.pricePerPerson;
+          pricePerPackage = dbVehicle.pricePerPackage || 0;
+          serviceName = dbVehicle.name;
+        } else {
+          // Fallback to hardcoded services for legacy IDs
+          const fallbackService = getServiceById(
+            "transport",
+            journey.transportId,
+          );
+          if (!fallbackService) continue;
+          pricePerPerson = fallbackService.pricePerPerson;
+          pricePerPackage = fallbackService.pricePerPackage || 0;
+          serviceName = fallbackService.name;
         }
 
-        const journeyPrice =
-          service.pricePerPerson > 0
-            ? service.pricePerPerson * adultCount +
-              service.pricePerPerson * childCount
-            : service.pricePerPackage || 0;
+        // pricePerPackage = fixed price for the vehicle (e.g. 340 SAR car)
+        // pricePerPerson  = per-head price (e.g. 30 SAR bus)
+        if (pricePerPackage > 0) {
+          servicePrice = pricePerPackage;
+        } else {
+          servicePrice = pricePerPerson * (adultCount + childCount);
+        }
 
         processedJourneys.push({
           journeyNumber: i + 1,
@@ -643,19 +672,19 @@ export const calculatePrice = async (
           toCity: journey.toCity,
           journeyDate: journey.journeyDate,
           journeyTime: journey.journeyTime,
-          serviceName: service.name,
-          serviceId: service.id,
-          pricePerPerson: service.pricePerPerson,
-          pricePerPackage: service.pricePerPackage,
-          totalPrice: journeyPrice,
+          serviceName,
+          serviceId: journey.transportId,
+          pricePerPerson,
+          pricePerPackage,
+          totalPrice: servicePrice,
         });
 
-        totalAmount += journeyPrice;
+        totalAmount += servicePrice;
       }
 
       if (processedJourneys.length > 0) {
         breakdown.transportJourneys = processedJourneys;
-        // Also update aggregate transport price
+        // Aggregate transport price
         const totalTransportJourneyPrice = processedJourneys.reduce(
           (sum, j) => sum + j.totalPrice,
           0,
@@ -1116,6 +1145,93 @@ export const createCustomUmrahBooking = async (
         };
 
         totalAmount += transportPrice;
+      }
+    }
+
+    // NEW: Process transport journeys and save routes in snapshot
+    const transportJourneysFromBody = req.body.transportJourneys;
+    if (
+      transportJourneysFromBody &&
+      Array.isArray(transportJourneysFromBody) &&
+      transportJourneysFromBody.length > 0
+    ) {
+      const processedRoutes: any[] = [];
+      let totalTransportPrice = 0;
+
+      for (let i = 0; i < transportJourneysFromBody.length; i++) {
+        const journey = transportJourneysFromBody[i];
+
+        if (!journey.transportId || journey.transportId === "transport-none") {
+          continue;
+        }
+
+        // Lookup vehicle in DB (admin-managed prices)
+        const dbVehicle = await TransportVehicle.findOne({
+          id: journey.transportId,
+          status: "active",
+        });
+
+        let servicePrice = 0;
+        let serviceName = journey.transportId;
+        let pricePerPerson = 0;
+        let pricePerPackage = 0;
+
+        if (dbVehicle) {
+          pricePerPerson = dbVehicle.pricePerPerson;
+          pricePerPackage = dbVehicle.pricePerPackage || 0;
+          serviceName = dbVehicle.name;
+        } else {
+          const fallbackService = getServiceById(
+            "transport",
+            journey.transportId,
+          );
+          if (!fallbackService) continue;
+          pricePerPerson = fallbackService.pricePerPerson;
+          pricePerPackage = fallbackService.pricePerPackage || 0;
+          serviceName = fallbackService.name;
+        }
+
+        servicePrice =
+          pricePerPackage > 0
+            ? pricePerPackage
+            : pricePerPerson * (adultCount + childCount);
+
+        processedRoutes.push({
+          journeyNumber: i + 1,
+          id: journey.id || `journey-${i + 1}`,
+          fromCity: journey.fromCity,
+          toCity: journey.toCity,
+          journeyDate: journey.journeyDate || "",
+          journeyTime: journey.journeyTime || "",
+          distance: journey.distance ?? 0,
+          estimatedDuration: journey.estimatedDuration || "",
+          notes: journey.notes || "",
+          serviceId: journey.transportId,
+          serviceName,
+          vehicleType: dbVehicle?.vehicleType || "",
+          pricePerPerson,
+          pricePerPackage,
+          totalPrice: servicePrice,
+        });
+
+        totalTransportPrice += servicePrice;
+      }
+
+      if (processedRoutes.length > 0) {
+        totalAmount += totalTransportPrice;
+        // Override/merge transportSnapshot with routes detail
+        transportSnapshot = {
+          ...(transportSnapshot || {}),
+          id: transportSnapshot?.id || "transport-journeys",
+          type: "transport",
+          name: `${processedRoutes.length} Transport Journey(s)`,
+          description: transportSnapshot?.description || "",
+          pricePerPerson: 0,
+          pricePerPackage: 0,
+          totalPrice: totalTransportPrice,
+          selected: true,
+          routes: processedRoutes,
+        };
       }
     }
 

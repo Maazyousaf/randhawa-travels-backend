@@ -106,4 +106,19 @@ router.delete(
   adminController.deleteHotelBooking,
 );
 
+// ==============================
+// Transport Vehicles Management
+// ==============================
+import {
+  createTransportVehicle,
+  updateTransportVehicle,
+  deleteTransportVehicle,
+  getTransportVehicles,
+} from "../controllers/transportVehicle.controller.js";
+
+router.get("/transport-vehicles", adminProtect, getTransportVehicles);
+router.post("/transport-vehicles", adminProtect, createTransportVehicle);
+router.patch("/transport-vehicles/:id", adminProtect, updateTransportVehicle);
+router.delete("/transport-vehicles/:id", adminProtect, deleteTransportVehicle);
+
 export default router;

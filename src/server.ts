@@ -21,6 +21,7 @@ import groupTicketRoutes from "./routes/groupTicket.routes.js";
 import { seedFlights } from "./utils/seedFlights.js";
 import { seedGroups } from "./utils/seedGroups.js";
 import { seedHotels } from "./utils/seedHotels.js";
+import { seedTransportVehicles } from "./utils/seedTransportVehicles.js";
 
 const app = express();
 const isServerless = !!process.env.VERCEL;
@@ -234,6 +235,12 @@ const startServer = async () => {
     }
 
     // ----------------------------------
+    // Seed Transport Vehicles
+    // ----------------------------------
+
+    await seedTransportVehicles();
+
+    // ----------------------------------
     // Start Express Server
     // ----------------------------------
 
@@ -256,9 +263,11 @@ const startServer = async () => {
 // ======================================
 
 if (process.env.VERCEL) {
-  connectDB().catch((error) => {
-    console.error("❌ Vercel MongoDB startup failed:", error);
-  });
+  connectDB()
+    .then(() => seedTransportVehicles())
+    .catch((error) => {
+      console.error("❌ Vercel MongoDB startup failed:", error);
+    });
 } else {
   startServer();
 }
