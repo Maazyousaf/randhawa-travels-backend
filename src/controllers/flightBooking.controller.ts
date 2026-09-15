@@ -693,13 +693,24 @@ export const getMyFlightBookings = async (req: Request, res: Response) => {
       });
     }
 
+    const loggedInUser = await User.findById(userId).select("email");
+    const userEmail = loggedInUser?.email?.toLowerCase();
+
+    const bookingQuery = userEmail
+      ? {
+          $or: [
+            { userId },
+            { customerEmail: userEmail },
+            { "contact.email": userEmail },
+          ],
+        }
+      : { userId };
+
     // =================================================
     // GET USER BOOKINGS
     // =================================================
 
-    const bookings = await FlightBooking.find({
-      userId,
-    }).sort({
+    const bookings = await FlightBooking.find(bookingQuery).sort({
       createdAt: -1,
     });
 

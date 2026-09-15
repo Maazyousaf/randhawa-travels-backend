@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import GroupTicketBooking from "../models/groupTicketBooking.model.js";
 import GroupTicket from "../models/groupTicket.model.js";
+import User from "../models/user.model.js";
 import { sendEmail } from "../utils/email.js";
 import { buildGroupTicketBookingEmail } from "../utils/buildGroupTicketBookingEmail.js";
 
@@ -8,7 +9,9 @@ type AuthenticatedRequest = Request & { user?: { id?: string; _id?: string } };
 
 export const getGroupTickets = async (_req: Request, res: Response) => {
   try {
-    const tickets = await GroupTicket.find({ active: true }).sort({ createdAt: -1 });
+    const tickets = await GroupTicket.find({ active: true }).sort({
+      createdAt: -1,
+    });
     return res
       .status(200)
       .json({ success: true, count: tickets.length, tickets });
@@ -37,7 +40,7 @@ export const createGroupTicketBooking = async (
       agentRemarks,
       payment,
     } = req.body;
-    
+
     // Fetch ticket from database
     const ticket = await GroupTicket.findOne({ id: ticketId, active: true });
 
@@ -143,7 +146,20 @@ export const getMyGroupTicketBookings = async (
 ) => {
   const userId = req.user?.id || req.user?._id;
   if (!userId) return res.status(200).json({ success: true, bookings: [] });
-  const bookings = await GroupTicketBooking.find({ userId }).sort({
+
+  const loggedInUser = await User.findById(userId).select("email");
+  const userEmail = loggedInUser?.email?.toLowerCase();
+  const bookingQuery = userEmail
+    ? {
+        $or: [
+          { userId },
+          { customerEmail: userEmail },
+          { "customer.email": userEmail },
+        ],
+      }
+    : { userId };
+
+  const bookings = await GroupTicketBooking.find(bookingQuery).sort({
     createdAt: -1,
   });
   return res.status(200).json({ success: true, bookings });

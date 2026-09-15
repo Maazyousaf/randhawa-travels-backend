@@ -865,8 +865,21 @@ export const getMyGroupBookings = async (
       return;
     }
 
+    const loggedInUser = await User.findById(userId).select("email");
+    const userEmail = loggedInUser?.email?.toLowerCase();
+
+    const bookingQuery = userEmail
+      ? {
+          $or: [
+            { userId },
+            { customerEmail: userEmail },
+            { "customer.email": userEmail },
+          ],
+        }
+      : { userId };
+
     // Find by userId (now ObjectId, not String)
-    const bookings = await GroupBooking.find({ userId }).sort({
+    const bookings = await GroupBooking.find(bookingQuery).sort({
       createdAt: -1,
     });
 

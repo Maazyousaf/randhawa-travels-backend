@@ -40,7 +40,7 @@ export const CUSTOM_UMRAH_SERVICES: CustomUmrahServicesConfig = {
     },
     {
       id: "visa-normal",
-      name: "Normal Visa Processing",
+      name: "Normal Visa",
       description:
         "Standard Umrah visa processing. Processing time: 4-5 working days.",
       pricePerPerson: 8500,
@@ -50,7 +50,7 @@ export const CUSTOM_UMRAH_SERVICES: CustomUmrahServicesConfig = {
     },
     {
       id: "visa-express",
-      name: "Express Umrah Visa",
+      name: "Express Visa",
       description:
         "Fast-track Umrah visa processing with priority handling. Processing time: 3-5 working days.",
       pricePerPerson: 12000,

@@ -625,13 +625,24 @@ export const getMyHotelBookings = async (req: Request, res: Response) => {
       });
     }
 
+    const loggedInUser = await User.findById(userId).select("email");
+    const userEmail = loggedInUser?.email?.toLowerCase();
+
+    const bookingQuery = userEmail
+      ? {
+          $or: [
+            { userId },
+            { customerEmail: userEmail },
+            { "contact.email": userEmail },
+          ],
+        }
+      : { userId };
+
     // =================================================
     // GET USER BOOKINGS
     // =================================================
 
-    const bookings = await HotelBooking.find({
-      userId,
-    }).sort({
+    const bookings = await HotelBooking.find(bookingQuery).sort({
       createdAt: -1,
     });
 
