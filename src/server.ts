@@ -45,11 +45,11 @@ const defaultAllowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
   "https://randhawa-air-travel.vercel.app",
+  "https://ra-travels.com",
+  "https://www.ra-travels.com",
   "https://randhawa-admin.vercel.app",
-  "https://wander-luxe-scape.vercel.app",
   "https://www.randhawa-air-travel.vercel.app",
   "https://www.randhawa-admin.vercel.app",
-  "https://www.wander-luxe-scape.vercel.app",
 ];
 
 const allowedOrigins = [
