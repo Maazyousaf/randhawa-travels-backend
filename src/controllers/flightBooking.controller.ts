@@ -850,7 +850,7 @@ export const sendBookingEmail = async (req: Request, res: Response) => {
 
     await sendEmail(
       toEmail,
-      `Randhawa Air Travels Int'l - Flight Booking Request ${booking.requestId}`,
+      `RA Travels - Flight Booking Request ${booking.requestId}`,
       emailBody,
     );
 

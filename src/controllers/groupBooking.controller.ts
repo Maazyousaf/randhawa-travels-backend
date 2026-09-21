@@ -783,7 +783,7 @@ export const sendGroupBookingEmail = async (
     const emailBody = buildGroupBookingEmail(booking);
     await sendEmail(
       emailAddress,
-      `Randhawa Air Travels Int'l - Group Booking Request ${booking.bookingReference}`,
+      `RA Travels - Group Booking Request ${booking.bookingReference}`,
       emailBody,
     );
     res.status(200).json({

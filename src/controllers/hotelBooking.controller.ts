@@ -777,7 +777,7 @@ export const sendHotelBookingEmail = async (req: Request, res: Response) => {
 
     await sendEmail(
       toEmail,
-      `Randhawa Air Travels Int'l - Hotel Booking Request ${booking.requestId}`,
+      `RA Travels - Hotel Booking Request ${booking.requestId}`,
       emailBody,
     );
 

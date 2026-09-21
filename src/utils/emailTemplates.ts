@@ -77,7 +77,7 @@ export const generateFlightBookingEmail = (
     
     <p>If you have any questions, please don't hesitate to contact us.</p>
     
-    <p>Best regards,<br/>Randhawa Air Travels Int'l</p>
+    <p>Best regards,<br/>RA Travels</p>
   `;
 
   return { subject, body };
@@ -144,7 +144,7 @@ export const generateGroupBookingEmail = (
     
     <p>If you have any questions, please don't hesitate to contact us.</p>
     
-    <p>Best regards,<br/>Randhawa Air Travels Int'l</p>
+    <p>Best regards,<br/>RA Travels</p>
   `;
 
   return { subject, body };
@@ -210,8 +210,8 @@ export const generateGroupTicketBookingEmail = (
         <li><strong>Passengers:</strong> ${passengerCount}</li>
         <li><strong>Total Amount:</strong> PKR ${totalAmount.toLocaleString()}</li>
       </ul>
-      <p>If you have any questions, please contact Randhawa Air Travels Int'l.</p>
-      <p>Best regards,<br/>Randhawa Air Travels Int'l</p>
+      <p>If you have any questions, please contact RA Travels.</p>
+      <p>Best regards,<br/>RA Travels</p>
     `,
   };
 };
@@ -282,7 +282,7 @@ export const generateHotelBookingEmail = (
     
     <p>If you have any questions, please don't hesitate to contact us.</p>
     
-    <p>Best regards,<br/>Randhawa Air Travels Int'l</p>
+    <p>Best regards,<br/>RA Travels</p>
   `;
 
   return { subject, body };

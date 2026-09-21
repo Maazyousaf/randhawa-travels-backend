@@ -123,7 +123,7 @@ app.use(
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json({
     success: true,
-    message: "🚀 Randhawa Air Travels Int'l Backend Running...",
+    message: "🚀 RA Travels Backend Running...",
     version: "1.0.1",
   });
 });
@@ -246,7 +246,7 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
       console.log("===========================================");
-      console.log("🚀 Randhawa Air Travels Int'l Backend Started Successfully");
+      console.log("🚀 RA Travels Backend Started Successfully");
       console.log(`🌐 Server : http://localhost:${PORT}`);
       console.log(`📦 Environment : ${process.env.NODE_ENV || "development"}`);
       console.log("===========================================");

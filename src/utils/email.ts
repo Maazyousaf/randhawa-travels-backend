@@ -30,7 +30,7 @@ export const sendEmail = async (
 ) => {
   try {
     await transporter.sendMail({
-      from: `"Randhawa Air Travels Int'l" <${emailUser}>`,
+      from: `"RA Travels" <${emailUser}>`,
       to: email,
       subject,
       html: `
@@ -62,7 +62,7 @@ export const sendEmail = async (
                   mminheight:200px;
                 "
               >
-                <h2 style="margin:0;">Randhawa Air Travels Int'l</h2>
+                <h2 style="margin:0;">RA Travels</h2>
               </div>
 
               <div style="padding:30px; font-size:16px; line-height:1.5; color:#333;">
@@ -78,7 +78,7 @@ export const sendEmail = async (
                   color:#777;
                 "
               >
-                © ${new Date().getFullYear()} Randhawa Air Travels Int'l
+                © ${new Date().getFullYear()} RA Travels
               </div>
             </div>
           </body>

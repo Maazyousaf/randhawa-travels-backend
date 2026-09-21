@@ -99,7 +99,7 @@ export const createGroupTicketBooking = async (
       try {
         await sendEmail(
           emailAddress,
-          `Randhawa Air Travels Int'l - Group Ticket Request ${bookingReference}`,
+          `RA Travels - Group Ticket Request ${bookingReference}`,
           buildGroupTicketBookingEmail(booking),
         );
         emailSent = true;

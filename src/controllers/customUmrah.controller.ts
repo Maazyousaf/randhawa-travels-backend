@@ -1384,7 +1384,7 @@ export const createCustomUmrahBooking = async (
       const emailBody = buildCustomUmrahEmail(booking.toObject());
       await sendEmail(
         customerEmail,
-        `Randhawa Air Travels Int'l - Custom Umrah Booking Request ${booking.bookingReference}`,
+        `RA Travels - Custom Umrah Booking Request ${booking.bookingReference}`,
         emailBody,
       );
     } catch (emailError) {
@@ -1578,7 +1578,7 @@ export const sendCustomUmrahBookingEmail = async (
     const emailBody = buildCustomUmrahEmail(booking.toObject());
     await sendEmail(
       emailAddress,
-      `Randhawa Air Travels Int'l - Custom Umrah Booking Request ${booking.bookingReference}`,
+      `RA Travels - Custom Umrah Booking Request ${booking.bookingReference}`,
       emailBody,
     );
 
