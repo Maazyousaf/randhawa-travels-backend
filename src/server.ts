@@ -17,6 +17,7 @@ import adminRoutes from "./routes/admin.routes.js";
 import customUmrahRoutes from "./routes/customUmrah.routes.js";
 import bookingSearchRoutes from "./routes/bookingSearch.routes.js";
 import groupTicketRoutes from "./routes/groupTicket.routes.js";
+import feedbackRoutes from "./routes/feedback.routes.js";
 
 import { seedFlights } from "./utils/seedFlights.js";
 import { seedGroups } from "./utils/seedGroups.js";
@@ -167,6 +168,9 @@ mountRoute(`${apiPrefix}/bookings`, bookingSearchRoutes);
 
 // Admin Panel
 mountRoute(`${apiPrefix}/admin`, adminRoutes);
+
+// Feedback / Contact form
+mountRoute(`${apiPrefix}/feedback`, feedbackRoutes);
 
 // ======================================
 // 404 ROUTE

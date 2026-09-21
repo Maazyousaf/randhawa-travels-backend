@@ -27,11 +27,13 @@ export const sendEmail = async (
   email: string,
   subject: string,
   message: string,
+  options?: { replyTo?: string; from?: string },
 ) => {
   try {
     await transporter.sendMail({
-      from: `"RA Travels" <${emailUser}>`,
+      from: options?.from || `"RA Travels" <${emailUser}>`,
       to: email,
+      replyTo: options?.replyTo || emailUser,
       subject,
       html: `
         <!DOCTYPE html>
