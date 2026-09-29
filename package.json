@@ -13,7 +13,8 @@
     "seed-admins": "tsx scripts/seedAdminUsers.ts",
     "seed-group-tickets": "tsx scripts/seedGroupTickets.ts",
     "seed-late-flights": "tsx scripts/seedLateSeptemberOctoberFlights.ts",
-    "seed-transport-vehicles": "tsx scripts/seedTransportVehicles.ts"
+    "seed-transport-vehicles": "tsx scripts/seedTransportVehicles.ts",
+    "sync-umrah-hotels": "tsx scripts/syncUmrahHotels.ts"
   },
   "keywords": [],
   "author": "",
