@@ -18,6 +18,7 @@ export interface IHotel extends Document {
   name: string;
   stars: number;
   location: string;
+  mapUrl?: string;
 
   city: string;
   country: string;
@@ -68,6 +69,12 @@ const hotelSchema = new Schema<IHotel>(
     location: {
       type: String,
       required: true,
+      trim: true,
+    },
+
+    mapUrl: {
+      type: String,
+      default: "",
       trim: true,
     },
 

@@ -20,7 +20,13 @@ const syncUmrahHotels = async () => {
       {
         $set: {
           name: hotel.name,
+          stars: hotel.stars,
+          location: hotel.location,
+          mapUrl: hotel.mapUrl || "",
           pricePerNight: hotel.pricePerNight,
+          image: hotel.image,
+          amenities: hotel.amenities,
+          images: hotel.images || [],
           roomTypes: hotel.roomTypes || [],
           distanceFromHaram: hotel.distanceFromHaram || "",
           distanceFromMasjidNabawi: hotel.distanceFromMasjidNabawi || "",
@@ -31,13 +37,8 @@ const syncUmrahHotels = async () => {
         },
         $setOnInsert: {
           id: hotel.id,
-          stars: hotel.stars,
-          location: hotel.location,
           country: hotel.country,
-          image: hotel.image,
-          amenities: hotel.amenities,
           status: "active",
-          images: hotel.images || [],
           category: hotel.category,
         },
       },

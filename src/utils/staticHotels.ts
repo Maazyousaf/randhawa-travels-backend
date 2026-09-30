@@ -3,6 +3,7 @@ export interface StaticHotel {
   name: string;
   stars: number;
   location: string;
+  mapUrl?: string;
   image: string;
   amenities: string[];
   pricePerNight: number;
@@ -49,11 +50,12 @@ export const STATIC_HOTELS: HotelCity[] = [
     hotels: [
       {
         id: "makkah-swissotel",
-        name: "Hidaya tul Kubra",
+        name: "M Hotel Makkah by Millennium",
         stars: 5,
-        location: "Abraj Al Bait Complex",
+        location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/7hMk2ziPzsCNtefSA",
         image:
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/269695526.jpg?k=823f6ed6dd9528a5dc6530881fb728e36e208c44bce0d220f534e2578eca6e36&o=",
         amenities: [
           "Free WiFi",
           "Breakfast Included",
@@ -64,30 +66,29 @@ export const STATIC_HOTELS: HotelCity[] = [
           "Safe Deposit Box",
           "Flat Screen TV",
         ],
-        pricePerNight: toPkr(60),
+        pricePerNight: toPkr(210),
         city: "makkah",
         country: "Saudi Arabia",
-        distanceFromHaram: "2500 meter with shuttle bus service",
+        distanceFromHaram: "2500 meter with shuttle service every 20 minutes",
         images: [
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800",
-          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/269695526.jpg?k=823f6ed6dd9528a5dc6530881fb728e36e208c44bce0d220f534e2578eca6e36&o=",
         ],
         category: "luxury",
         isUmrahHotel: true,
         umrahCity: "makkah",
         roomTypes: [
           {
-            id: "swissotel-room",
+            id: "millennium-quad-room",
             type: "Room (Up to 4 persons)",
             occupancy: 4,
             pricePerPerson: 0,
-            pricePerNight: toPkr(60),
+            pricePerNight: toPkr(210),
           },
           {
-            id: "swissotel-bed",
+            id: "millennium-bed-sharing",
             type: "Bed Sharing (5-6 persons)",
             occupancy: 5,
-            pricePerPerson: toPkr(12),
+            pricePerPerson: toPkr(60),
             pricePerNight: 0,
           },
         ],
@@ -96,9 +97,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-hilton-convention",
         name: "MAAZER ALTAQWA",
         stars: 5,
-        location: "King Abdul Aziz Road",
+        location: "Al Taqwa Road",
+        mapUrl: "https://maps.app.goo.gl/6hvnscoLnMXFhpSU7",
         image:
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjPeKyl4U2tcedire0SWuQjtXw8sYfnGY_oMbEr6IaQR5xzbK_oAKk6K4&s=10",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -113,7 +115,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromHaram: "2500 meter with shuttle bus service",
         images: [
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjPeKyl4U2tcedire0SWuQjtXw8sYfnGY_oMbEr6IaQR5xzbK_oAKk6K4&s=10",
         ],
         category: "luxury",
         isUmrahHotel: true,
@@ -139,9 +141,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-safwah-royale",
         name: "NUMBER ONE",
         stars: 5,
-        location: "Clock Tower, Abraj Al Bait",
+        location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/5QiDJYskbQQZoqEL7",
         image:
-          "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRMTU94Goliq-n2Ndb2tI7r0RdCGC1BLGk2PAOY_j25DMhlSVYJjQNyIE&s=10",
         amenities: [
           "Free WiFi",
           "Breakfast Buffet",
@@ -153,9 +156,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         pricePerNight: toPkr(95),
         city: "makkah",
         country: "Saudi Arabia",
-        distanceFromHaram: "1200 METER",
+        distanceFromHaram: "1100 METER",
         images: [
-          "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRMTU94Goliq-n2Ndb2tI7r0RdCGC1BLGk2PAOY_j25DMhlSVYJjQNyIE&s=10",
         ],
         category: "luxury",
         isUmrahHotel: true,
@@ -181,9 +184,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-anjum",
         name: "MASARAT SILVER",
         stars: 4,
-        location: "Ajyad Street",
+        location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/zSqBmsLPKQF4aCk47",
         image:
-          "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600",
+          "https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -195,9 +199,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         pricePerNight: toPkr(230),
         city: "makkah",
         country: "Saudi Arabia",
-        distanceFromHaram: "700 METER",
+        distanceFromHaram: "650 METER",
         images: [
-          "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800",
+          "https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg",
         ],
         category: "premium",
         isUmrahHotel: true,
@@ -224,8 +228,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         name: "ALMASSA BADER",
         stars: 4,
         location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/7dAMVmH1rT5ddPw9A",
         image:
-          "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600",
+          "https://badr-al-massa-hotel.hotels-mecca.com/data/Photos/OriginalPhoto/14739/1473972/1473972622/mecca-al-massa-bader-hotel-photo-1.JPEG",
         amenities: [
           "Free WiFi",
           "Restaurant",
@@ -238,7 +243,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromHaram: "600 METER",
         images: [
-          "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800",
+          "https://badr-al-massa-hotel.hotels-mecca.com/data/Photos/OriginalPhoto/14739/1473972/1473972622/mecca-al-massa-bader-hotel-photo-1.JPEG",
         ],
         category: "premium",
         isUmrahHotel: true,
@@ -257,16 +262,17 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-elaf-kinda",
         name: "SWISS ALKHALIL",
         stars: 4,
-        location: "Aziziyah District",
+        location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/FYS7L72USKwKgBkP7",
         image:
-          "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBVkS_ISBNSddui6iOqO7rvr9Lmt8ukYPtat5I_t0bJnuoMWUGo2sADVE&s=10",
         amenities: ["Free WiFi", "Breakfast", "Air Conditioning", "TV", "Safe"],
         pricePerNight: toPkr(270),
         city: "makkah",
         country: "Saudi Arabia",
         distanceFromHaram: "500 METER",
         images: [
-          "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBVkS_ISBNSddui6iOqO7rvr9Lmt8ukYPtat5I_t0bJnuoMWUGo2sADVE&s=10",
         ],
         category: "standard",
         isUmrahHotel: true,
@@ -292,16 +298,17 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-buloorat-al-durrah",
         name: "BULOORAT AL DURRAH",
         stars: 4,
-        location: "Makkah",
+        location: "Ibrahim Al Khalil Road",
+        mapUrl: "https://maps.app.goo.gl/3moEi9YTpwCtb7La8",
         image:
-          "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+          "https://tiviho.com/media/hotel_image/unnamed_1.webp",
         amenities: ["Free WiFi", "Room Service", "Air Conditioning", "TV"],
         pricePerNight: toPkr(300),
         city: "makkah",
         country: "Saudi Arabia",
         distanceFromHaram: "450 METER",
         images: [
-          "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800",
+          "https://tiviho.com/media/hotel_image/unnamed_1.webp",
         ],
         category: "premium",
         isUmrahHotel: true,
@@ -327,9 +334,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-al-marwa",
         name: "EMAAR WORTH ELITE",
         stars: 3,
-        location: "Ibrahim Al Khalil Street",
+        location: "Ibrahim Al Khalil Road, Kabootar Chowk",
+        mapUrl: "https://maps.app.goo.gl/fhRWfFHzwS22aXUDA",
         image:
-          "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/629334303.jpg?k=5f4ab742d81a78ea810038ff7c7fd1e158a06fc0025f3f1b115f2114daefffc0&o=",
         amenities: [
           "WiFi",
           "Breakfast",
@@ -342,7 +350,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromHaram: "450 METER",
         images: [
-          "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/629334303.jpg?k=5f4ab742d81a78ea810038ff7c7fd1e158a06fc0025f3f1b115f2114daefffc0&o=",
         ],
         category: "standard",
         isUmrahHotel: true,
@@ -361,9 +369,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-dar-al-taqwa",
         name: "DIYAFAT MUBARAK",
         stars: 3,
-        location: "Al Aziziyah",
+        location: "Ibrahim Al Khalil Road, Kabootar Chowk",
+        mapUrl: "https://maps.app.goo.gl/sDyCLVej9broasXM6",
         image:
-          "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQncezXaNfegIJd9YEBx9V6CWYbcfq2LBnXNqiVhKHwjvsm9XHW3WqmfAk&s=10",
         amenities: [
           "WiFi",
           "Breakfast",
@@ -376,7 +385,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromHaram: "250 METER",
         images: [
-          "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQncezXaNfegIJd9YEBx9V6CWYbcfq2LBnXNqiVhKHwjvsm9XHW3WqmfAk&s=10",
         ],
         category: "budget",
         isUmrahHotel: true,
@@ -395,16 +404,17 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "makkah-marsa-jaria",
         name: "MARSA JARIA",
         stars: 3,
-        location: "Makkah",
+        location: "Ibrahim Al Khalil Road, Kabootar Chowk",
+        mapUrl: "https://maps.app.goo.gl/VjpJwcA7EJUBJZyH7",
         image:
-          "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/661517782.jpg?k=99c02dce3c75f99cf41347413c69d5dae494242a4c8e1a22b019604072169e88&o=",
         amenities: ["WiFi", "Air Conditioning", "Shuttle Service"],
         pricePerNight: toPkr(470),
         city: "makkah",
         country: "Saudi Arabia",
         distanceFromHaram: "200 METER",
         images: [
-          "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/661517782.jpg?k=99c02dce3c75f99cf41347413c69d5dae494242a4c8e1a22b019604072169e88&o=",
         ],
         category: "budget",
         isUmrahHotel: true,
@@ -436,9 +446,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "madinah-pullman-zamzam",
         name: "RETAJ AL MADINA",
         stars: 5,
-        location: "King Fahd Road",
+        location: "Qurban Road, Masjid Bilal side",
+        mapUrl: "https://maps.app.goo.gl/thwpcSxLjxodfzzDA",
         image:
-          "https://images.unsplash.com/photo-1562790351-d273a961e0e9?w=600",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/554827241.jpg?k=8f193f921c22472b2b6bc639bedeebc510782a4bd74279ddd3e3e2acb9f028fd&o=",
         amenities: [
           "Free WiFi",
           "Breakfast Buffet",
@@ -450,9 +461,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         pricePerNight: toPkr(120),
         city: "madinah",
         country: "Saudi Arabia",
-        distanceFromMasjidNabawi: "1800 meter with shuttle bus service",
+        distanceFromMasjidNabawi: "1200 METER",
         images: [
-          "https://images.unsplash.com/photo-1562790351-d273a961e0e9?w=800",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/554827241.jpg?k=8f193f921c22472b2b6bc639bedeebc510782a4bd74279ddd3e3e2acb9f028fd&o=",
         ],
         category: "luxury",
         isUmrahHotel: true,
@@ -476,11 +487,12 @@ export const STATIC_HOTELS: HotelCity[] = [
       },
       {
         id: "madinah-oberoi",
-        name: "SHAMAS AL MADIAN",
+        name: "SHAMS AL MADINAH",
         stars: 5,
-        location: "Adjacent to Masjid an-Nabawi",
+        location: "Qurban Road, Masjid Bilal side",
+        mapUrl: "https://maps.app.goo.gl/thwpcSxLjxodfzzDA",
         image:
-          "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQi8gS9yRKsdQi-zw__iYYZb8X1eylD0agsQp7BBcDLS5n0yF-we4elmI&s=10",
         amenities: [
           "Free WiFi",
           "Gourmet Breakfast",
@@ -492,9 +504,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         pricePerNight: toPkr(120),
         city: "madinah",
         country: "Saudi Arabia",
-        distanceFromMasjidNabawi: "1800 meter with shuttle bus service",
+        distanceFromMasjidNabawi: "1200 METER",
         images: [
-          "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQi8gS9yRKsdQi-zw__iYYZb8X1eylD0agsQp7BBcDLS5n0yF-we4elmI&s=10",
         ],
         category: "luxury",
         isUmrahHotel: true,
@@ -518,11 +530,12 @@ export const STATIC_HOTELS: HotelCity[] = [
       },
       {
         id: "madinah-anwar",
-        name: "SHAZA MUNAWWARAH",
+        name: "SHAZA ALMONAWARA HOTEL",
         stars: 4,
-        location: "King Abdul Aziz Road",
+        location: "Near Top Ten, Uhud Road",
+        mapUrl: "https://maps.app.goo.gl/pkYuUfm9ZZatKzLHA",
         image:
-          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600",
+          "https://pix10.agoda.net/hotelImages/63098304/0/793ad10684def6905acfe66c4d4f65cc.png?ce=0&s=414x232",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -536,7 +549,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromMasjidNabawi: "1000 METER",
         images: [
-          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800",
+          "https://pix10.agoda.net/hotelImages/63098304/0/793ad10684def6905acfe66c4d4f65cc.png?ce=0&s=414x232",
         ],
         category: "premium",
         isUmrahHotel: true,
@@ -562,9 +575,9 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "madinah-hilton",
         name: "ZAHRATTAIBA-3",
         stars: 5,
-        location: "King Faisal Road",
+        location: "Masjid Bilal side",
         image:
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+          "https://r-xx.bstatic.com/xdata/images/hotel/1200x630/899557171.jpg?k=d6ab7b154c74bcb61a166ceb8d06acd4279de82fdfaa458a7122b6041cd03dbb&o=",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -577,7 +590,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromMasjidNabawi: "600 METER",
         images: [
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800",
+          "https://r-xx.bstatic.com/xdata/images/hotel/1200x630/899557171.jpg?k=d6ab7b154c74bcb61a166ceb8d06acd4279de82fdfaa458a7122b6041cd03dbb&o=",
         ],
         category: "luxury",
         isUmrahHotel: true,
@@ -603,9 +616,10 @@ export const STATIC_HOTELS: HotelCity[] = [
         id: "madinah-dar-al-iman",
         name: "KUNOOZ AL TAQWA",
         stars: 4,
-        location: "King Faisal Road",
+        location: "Al Fazal Bin Utba Road",
+        mapUrl: "https://maps.app.goo.gl/nX2xgKLT3CKEbyAdA",
         image:
-          "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4MNpF-HI5T3ykAZm7RC7LnGLpdjKXMj842gOQR7InpRBX-LuBHbgU-iQ8&s=10",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -618,7 +632,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromMasjidNabawi: "450 METER",
         images: [
-          "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4MNpF-HI5T3ykAZm7RC7LnGLpdjKXMj842gOQR7InpRBX-LuBHbgU-iQ8&s=10",
         ],
         category: "standard",
         isUmrahHotel: true,
@@ -642,11 +656,12 @@ export const STATIC_HOTELS: HotelCity[] = [
       },
       {
         id: "madinah-al-aqeeq",
-        name: "ARJWAN ALMADINA",
+        name: "ERGWAN AL MADINA HOTEL",
         stars: 3,
-        location: "Central Area",
+        location: "Markazia",
+        mapUrl: "https://maps.app.goo.gl/tnhRLoHYqqjeyvLz9",
         image:
-          "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=600",
+          "https://meezabgroup.com/wp-content/uploads/2026/09/ERGWAN-AL-MADINAH-Main.jpg",
         amenities: [
           "WiFi",
           "Breakfast",
@@ -659,7 +674,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         country: "Saudi Arabia",
         distanceFromMasjidNabawi: "300 METER",
         images: [
-          "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800",
+          "https://meezabgroup.com/wp-content/uploads/2026/09/ERGWAN-AL-MADINAH-Main.jpg",
         ],
         category: "standard",
         isUmrahHotel: true,
@@ -683,18 +698,19 @@ export const STATIC_HOTELS: HotelCity[] = [
       },
       {
         id: "madinah-crown",
-        name: "ODST AL MADIAN",
+        name: "ODST AL MADINAH HOTEL",
         stars: 3,
-        location: "Al Madinah Al Munawarah",
+        location: "Markazia",
+        mapUrl: "https://maps.app.goo.gl/YFrMFHPBUnj1AvLf8",
         image:
-          "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/154960069.jpg?k=3cbce3bd954494542e1c24927025da62f7eb356d7d9d484c3ffbfe4c1c7a4b29&o=",
         amenities: ["WiFi", "Breakfast", "Air Conditioning", "TV", "Shuttle"],
         pricePerNight: toPkr(440),
         city: "madinah",
         country: "Saudi Arabia",
-        distanceFromMasjidNabawi: "150 METER",
+        distanceFromMasjidNabawi: "100 METER",
         images: [
-          "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800",
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/154960069.jpg?k=3cbce3bd954494542e1c24927025da62f7eb356d7d9d484c3ffbfe4c1c7a4b29&o=",
         ],
         category: "budget",
         isUmrahHotel: true,

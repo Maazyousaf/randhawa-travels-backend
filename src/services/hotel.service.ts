@@ -20,11 +20,14 @@ export const searchHotels = async ({ city }: SearchHotelsParams) => {
       name: hotel.name,
       stars: hotel.stars,
       location: hotel.location,
+      mapUrl: hotel.mapUrl,
       city: hotel.city,
       country: hotel.country,
       image: hotel.image,
       amenities: hotel.amenities,
       pricePerNight: hotel.pricePerNight,
+      distanceFromHaram: hotel.distanceFromHaram,
+      distanceFromMasjidNabawi: hotel.distanceFromMasjidNabawi,
     }));
   } catch (error) {
     console.error("❌ Hotel search error:", error);
@@ -45,11 +48,14 @@ export const getHotelDetails = async (hotelId: string) => {
       name: hotel.name,
       stars: hotel.stars,
       location: hotel.location,
+      mapUrl: hotel.mapUrl,
       city: hotel.city,
       country: hotel.country,
       image: hotel.image,
       amenities: hotel.amenities,
       pricePerNight: hotel.pricePerNight,
+      distanceFromHaram: hotel.distanceFromHaram,
+      distanceFromMasjidNabawi: hotel.distanceFromMasjidNabawi,
     };
   } catch (error) {
     console.error("❌ Get hotel details error:", error);
