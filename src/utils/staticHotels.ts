@@ -186,8 +186,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         stars: 4,
         location: "Ibrahim Al Khalil Road",
         mapUrl: "https://maps.app.goo.gl/zSqBmsLPKQF4aCk47",
-        image:
-          "https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg",
         amenities: [
           "Free WiFi",
           "Breakfast",
@@ -200,9 +199,7 @@ export const STATIC_HOTELS: HotelCity[] = [
         city: "makkah",
         country: "Saudi Arabia",
         distanceFromHaram: "650 METER",
-        images: [
-          "https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg",
-        ],
+        images: ["https://i.ytimg.com/vi/M4rQMyRgMfI/maxresdefault.jpg"],
         category: "premium",
         isUmrahHotel: true,
         umrahCity: "makkah",
@@ -300,16 +297,13 @@ export const STATIC_HOTELS: HotelCity[] = [
         stars: 4,
         location: "Ibrahim Al Khalil Road",
         mapUrl: "https://maps.app.goo.gl/3moEi9YTpwCtb7La8",
-        image:
-          "https://tiviho.com/media/hotel_image/unnamed_1.webp",
+        image: "https://tiviho.com/media/hotel_image/unnamed_1.webp",
         amenities: ["Free WiFi", "Room Service", "Air Conditioning", "TV"],
         pricePerNight: toPkr(300),
         city: "makkah",
         country: "Saudi Arabia",
         distanceFromHaram: "450 METER",
-        images: [
-          "https://tiviho.com/media/hotel_image/unnamed_1.webp",
-        ],
+        images: ["https://tiviho.com/media/hotel_image/unnamed_1.webp"],
         category: "premium",
         isUmrahHotel: true,
         umrahCity: "makkah",
